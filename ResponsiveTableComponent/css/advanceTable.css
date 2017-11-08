@@ -1,0 +1,99 @@
+.tableOuter{
+	margin:5px;
+	padding:5px;
+	border:1px solid #ccc;
+	border-radius: 4px;
+	width:98%;
+	height:auto;
+	float:left;
+}
+.tHeadRow{
+	float:left;
+	width:100%;
+	background-color:#CCC;
+	border:1px solid #ccc;
+}
+.tRow{
+	float:left;
+	width:100%;
+}
+.tHead{
+	float:left;
+	padding:5px;
+	word-wrap: break-word;
+	border-right:1px solid #FFF;
+}
+.tdClass{
+	float:left;
+	padding: 5px 6px;
+	word-wrap: break-word;
+}
+.odd{
+	background-color:rgba(204, 204, 204, 0.33);;
+}
+.even{
+	background-color:#FFF;
+}
+.columnNameHolder{
+	float:left;
+	width:100%;
+	text-align: center;
+}
+.searchBoxHolder{
+	float:left;
+	width:100%;
+}
+.searchBox{
+	float:left;
+	width:100%;
+	padding: 4px 0px;
+    margin: 0px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+	background-image:url("../images/search.png");
+	background-repeat:no-repeat;
+	background-position: right; 
+}
+.searchDDL{
+	float:left;
+	width:100%;
+	padding: 4px 0px;
+    margin: 0px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.editSection{
+	float:left;
+	width:20px;
+	margin-right:5px;
+	background-image:url("../images/edit.png");
+	background-repeat:no-repeat;
+	background-position: left;
+}
+.deleteSection{
+	float:left;
+	width:20px;
+	margin-right:5px;
+	background-image:url("../images/delete.png");
+	background-repeat:no-repeat;
+	background-position: left;
+}
+.paginationHolder{
+	float:left;
+	width:100%;
+}
+.paginationBox{
+	float:left;
+	width:auto;
+	margin: 5px 5px 0px 0px;
+	padding : 5px;
+	border:1px solid #CCC;
+	border-radius: 2px;
+}
+.paginationActive{
+	background-color:#CCC;
+}
