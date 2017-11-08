@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	noOfRecPerPage = 2;
+	radioCollection = [];
+	enabledButton = 1;
+	var i = 1;
+	var count = 1;
+    $(".divClass").each(function(){
+		var radios = {"radioId" : this.id, "enable" : true, "paginationBtn" : i};
+		radioCollection.push(radios);
+		if(count < noOfRecPerPage){
+			count++;
+		}else{
+			count = 1;
+			i++;
+		}
+	});
+	
+	paginationButtonArr = [];
+	for(var i = 0; i < radioCollection.length; i++){
+		if(!isInArray(radioCollection[i].paginationBtn, paginationButtonArr)){
+			paginationButtonArr.push(radioCollection[i].paginationBtn);
+		}
+	}
+	$("#paginationHolder").html(cratePaginationButtonHTML(paginationButtonArr));
+	
+	paginationBtnSectionShowHide();
+	redioSectionShowHide();
+});
+
+function isInArray(value, array) {
+  return array.indexOf(value) > -1;
+}
+
+function cratePaginationButtonHTML(array){
+	var str = "<div class='paginationButton' id='prev' onClick='paginationPrev();'><<</div>";
+	for(var i = 1; i <= array.length; i++){
+		str = str + "<div class='paginationButton' id='btn_"+array[i-1]+"' onClick='pagination(" + array[i-1] + ");'>"+array[i-1]+"</div>";
+	}
+	str = str + "<div class='paginationButton' id='next' onClick='paginationNext();'>>></div>";
+	return str;
+}
+
+function redioSectionShowHide(){
+	for(var i = 0; i < radioCollection.length; i++){
+		if(radioCollection[i].paginationBtn === enabledButton){
+			$("#" + radioCollection[i].radioId).show();
+		}else{
+			$("#" + radioCollection[i].radioId).hide();
+		}
+	}
+}
+
+function paginationBtnSectionShowHide(){
+	for(var i = 1; i <= paginationButtonArr.length; i++){
+		//if(!$("#btn_" + enabledButton).is( ":visible" )){
+			if(i === enabledButton || i === (enabledButton + 1)){
+				$("#btn_" + i).show();
+			}else{
+				$("#btn_" + i).hide();
+			}
+		//}
+	}
+}
+
+function paginationPrev(){
+	if(enabledButton === 1){
+		
+	}else{
+		enabledButton = enabledButton-1;
+	}
+	redioSectionShowHide();
+	if (!$('#btn_' + enabledButton).is(':visible')) {
+		paginationBtnSectionShowHide();
+	}
+}
+
+function paginationNext(){
+	if(enabledButton === paginationButtonArr.length){
+		
+	}else{
+		enabledButton = enabledButton+1;
+	}
+	redioSectionShowHide();
+	if (!$('#btn_' + enabledButton).is(':visible')) {
+		paginationBtnSectionShowHide();
+	}
+}
+
+function pagination(index){
+	enabledButton = index;
+	redioSectionShowHide();
+	paginationBtnSectionShowHide();
+}
+</script>
+<style>
+.divClass{
+	float:left;
+	clear:both;
+	border:1px solid red;
+	margin:5px;
+	padding:5px;
+}
+.paginationHolder{
+	float:left;
+	clear:both;
+	margin:5px;
+	padding:5px;
+	width : 600px;
+}
+.paginationButton{
+	float:left;
+	border:1px solid red;
+	margin:5px;
+	padding:5px;
+}
+</style>
+</head>
+<body>
+<div class="divClass" id="radioHolder1">
+	<input type="radio" name="acc" value="1"> 1
+</div>
+<div class="divClass" id="radioHolder2">
+	<input type="radio" name="acc" value="2"> 2
+</div>
+<div class="divClass" id="radioHolder3">
+	<input type="radio" name="acc" value="3"> 3
+</div>
+<div class="divClass" id="radioHolder4">
+	<input type="radio" name="acc" value="4"> 4
+</div>
+<div class="divClass" id="radioHolder5">
+	<input type="radio" name="acc" value="5"> 5
+</div>
+<div class="divClass" id="radioHolder6">
+	<input type="radio" name="acc" value="6"> 6
+</div>
+<div class="divClass" id="radioHolder7">
+	<input type="radio" name="acc" value="7"> 7
+</div>
+<div class="divClass" id="radioHolder8">
+	<input type="radio" name="acc" value="8"> 8
+</div>
+<div class="divClass" id="radioHolder9">
+	<input type="radio" name="acc" value="9"> 9
+</div>
+<div class="divClass" id="radioHolder10">
+	<input type="radio" name="acc" value="10"> 10
+</div>
+<div class="divClass" id="radioHolder11">
+	<input type="radio" name="acc" value="11"> 11
+</div>
+<div id="paginationHolder" class="paginationHolder">
+</div>
+</body>
+</html>
