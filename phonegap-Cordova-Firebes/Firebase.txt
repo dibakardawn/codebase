@@ -1,0 +1,3 @@
+https://stackoverflow.com/questions/39754798/firebase-push-notifications-with-phonegap-build-using-cordova-plugin-fcm
+
+http://jayantpaliwal.com/2016/11/setup-firebase-push-notification-in-phonegap-app/

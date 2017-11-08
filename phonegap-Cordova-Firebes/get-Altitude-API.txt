@@ -1,0 +1,1 @@
+https://stackoverflow.com/questions/31839199/getting-altitude-from-latitude-and-longitude-here-api
