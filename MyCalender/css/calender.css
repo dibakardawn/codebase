@@ -1,0 +1,90 @@
+.calender{
+	position: absolute;
+    background-color: #FFF;
+    width: 226px;
+    height: auto;
+	margin: 3px 0px;
+	padding:3px;
+    border: 1px solid #CCC;
+	border-radius: 3px;
+	z-index:99999;
+}
+.calenderHeader{
+	float: left;
+    width: 220px;
+    background-color: #e3e3e3;
+    height: 30px;
+	padding:3px;
+}
+.calenderPrev{
+	float: left;
+	width: auto;
+	padding:5px;
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	background-color: #FFF;
+	cursor:pointer;
+}
+.calenderNext{
+	float: right;
+	width: auto;
+	padding:5px;
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	background-color: #FFF;
+	cursor:pointer;
+}
+.calenderMonthDDL{
+	margin: 5px 0px 0px 5px;
+}
+.calenderYearDDL{
+	margin: 5px 5px 0px 5px;
+}
+.calenderBody{
+	float: left;
+    width: 216px;
+    background-color: #FFF;
+    height: auto;
+	padding:3px;
+	margin: 0px 0px 0px 5px;
+}
+.calenderWeekdayHeader{
+	float: left;
+	width: 22px;
+	height:auto;
+	margin:2px -1px 0px 0px;
+	padding:3px;
+	font-weight: bold;
+    border: 1px Solid #FFF;
+    text-align: center;
+}
+.calendeNonDays{
+	float: left;
+	width:21px;
+	height:auto;
+	margin:2px 2px 0px 0px;
+	padding:3px;
+	text-align: center;
+}
+.calendeDays{
+	float: left;
+	width:22px;
+	height:auto;
+	margin:2px -1px 0px 0px;
+	padding:3px;
+	border:1px solid #ccc;
+	text-align: center;
+	cursor:pointer;
+}
+.calendeDays:hover{
+	background-color:#F1F1F1;
+}
+.calenderSelectedDay{
+	border: 1px solid #003eff;
+    background: #007fff;
+    color: #FFF;
+}
+.todayDate{
+	border: 1px solid #DAD55E;
+    background: #FFFA90;
+}
