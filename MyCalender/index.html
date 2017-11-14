@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="css/calender.css">
+<script src="js/calender.js"></script>
+<script>
+$(document).ready(function(){
+	//calenderNS.DATEFORMATE = "DD-MM-YYYY";
+    calenderNS.initialize('#DOB');
+	calenderNS.initialize('#DOJ');
+});
+</script>
+</head>
+<body>
+	<input type="text" id="DOB" name="DOB" value="">
+	<input type="text" id="DOJ" name="DOJ" value="">
+</body>
+</html>
