@@ -1,5 +1,0 @@
-https://www.npmjs.com/package/cordova-plugin-file#android-file-system-layout
-
-search with :: How to access external or internal storage with cordova
-
-http://rickluna.com/wp/2014/01/accessing-external-storage-in-android-phonegap-3-3/
