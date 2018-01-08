@@ -1,0 +1,623 @@
+/**
+ * Controllers
+ * @module controllers
+ */
+define(function (require, exports, module) {
+	'use strict';
+
+	/**
+	 * Main controller
+	 * @ngInject
+	 * @constructor
+	 */
+
+	exports.MainCtrl = /*@ngInject*/ function(lpPortal, lpWidget, lpCoreUtils, cardsModel, $timeout, formModule, $http, lpCoreI18n, CONSTANTS, GeneratePrintablePDF, $uibModal, $scope) {
+        var ctrl = this,
+            locHash = location.hash.match(/#\?[\w&=-]*id=([\w-]+)/),
+            mainInterval,
+            inputsInterval;
+
+        //Dependency VARIABLES definition
+        ctrl.i18n = lpCoreI18n;
+        ctrl.widget = lpWidget;
+        ctrl.widgetDom = this.widget.body;
+        ctrl.$widget = $(this.widget.body);
+        ctrl.portalRoot = lpPortal.root;
+        ctrl.CONSTANTS = CONSTANTS;
+        ctrl.generatePrintablePDF = GeneratePrintablePDF;
+        ctrl.CardsService = cardsModel;
+        ctrl.uibModal = $uibModal;
+
+        //Controller VARIABLES definition
+        //Cards variables
+        ctrl.cards = [];
+        ctrl.whichAlert = [];
+        ctrl.inactiveCards = [];
+        ctrl.preselectedCard = (locHash && locHash.length >= 2) ? locHash[1] : false;
+        ctrl.hasActiveCards = false;
+        ctrl.activeCards = [];
+        ctrl.activatedCards = [];
+        ctrl.cardsToActivate = [];
+        ctrl.showCVVs = [];
+        ctrl.cvvData = {};
+        ctrl.data = {};
+        ctrl.onlyActiveCardsIds = {
+            'cards': []
+        };
+        ctrl.activationProccessNotifications = [];
+        ctrl.techErrorTemplate = launchpad.staticRoot + '/widgets/[BBHOST]/widget-bmx-card-activation-process/templates/activationError.html',
+            ctrl.mediaPath = launchpad.staticRoot + '/features/[BBHOST]/module-bmx-cards/media';
+        ctrl.cardUrl = launchpad.staticRoot + '/features/[BBHOST]/theme-banamex/styles/images/';
+        $scope.themePath = launchpad.staticRoot + '/features/[BBHOST]/theme-banamex';
+        //Others
+        ctrl.mediaThemePath = launchpad.staticRoot + '/features/[BBHOST]/theme-banamex/styles/images';
+
+        ctrl.labels = {
+            'error.invalidCvv': ctrl.i18n.instant('error.invalidCvv'),
+            'error.noSelection': ctrl.i18n.instant('error.noSelection'),
+            'error.cardBlocked': ctrl.i18n.instant('error.cardBlocked'),
+            'error.activationFailed': ctrl.i18n.instant('error.activationFailed'),
+            'error.allActivationFailed': ctrl.i18n.instant('error.allActivationFailed'),
+            'error.gotoBranchErrorCode': ctrl.i18n.instant('error.gotoBranchErrorCode'),
+            'success.card': ctrl.i18n.instant('success.card'),
+            'success.cards': ctrl.i18n.instant('success.cards'),
+            'label.gotoBranchText': ctrl.i18n.instant('label.gotoBranchText'),
+            'label.titleAuth': ctrl.i18n.instant('label.titleAuth'),
+            'label.cardStatusInactive': ctrl.i18n.instant('label.cardStatusInactive'),
+            'label.cardStatusActive': ctrl.i18n.instant('label.cardStatusActive'),
+            'label.noInfo': ctrl.i18n.instant('label.noInfo'),
+            'label.eventTypeResponse': ctrl.i18n.instant('label.eventTypeResponse'),
+            'label.otherChannelActivation': ctrl.i18n.instant('label.otherChannelActivation'),
+            'label.Jan': ctrl.i18n.instant('label.Jan'),
+            'label.Apr': ctrl.i18n.instant('label.Apr'),
+            'label.Aug': ctrl.i18n.instant('label.Aug'),
+            'label.Dec': ctrl.i18n.instant('label.Dec'),
+            'label.bancaNet': ctrl.i18n.instant('label.bancaNet'),
+            'label.balancePerDay': ctrl.i18n.instant('label.balancePerDay'),
+            'label.activationDetail': ctrl.i18n.instant('label.activationDetail'),
+            'label.folio': ctrl.i18n.instant('label.folio'),
+            'label.eventType': ctrl.i18n.instant('label.eventType'),
+            'label.partyName': ctrl.i18n.instant('label.partyName'),
+            'label.activationDate': ctrl.i18n.instant('label.activationDate'),
+            'label.activationTime': ctrl.i18n.instant('label.activationTime'),
+            'label.receiptMessage': ctrl.i18n.instant('label.receiptMessage'),
+            'label.namePdf': ctrl.i18n.instant('label.namePdf')
+        };
+
+        ctrl.widgetDisabledTemplate = launchpad.staticRoot + '/widgets/[BBHOST]/widget-bmx-card-activation-process/templates/widgetDisabled.html';
+        ctrl.isWidgetDisabled = lpWidget.getPreference('disableWidget');
+
+        ctrl.dashboardLink = ctrl.portalRoot + '/banamex-cards/dashboard';
+
+        if (window.location.href.indexOf('-es/') > 0) {
+            ctrl.dashboardLink = ctrl.dashboardLink.replace('cards/', 'cards-es/');
+        }
+
+        ctrl.gotoDashboard = function() {
+            window.location.href = ctrl.dashboardLink;
+        };
+
+        //Workaround to prepare i18n labels
+        ctrl.labelsChecker = function() {
+            for (var label in ctrl.labels) {
+                if (ctrl.labels[label] === label) {
+                    ctrl.labels[label] = ctrl.i18n.instant(label);
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        ctrl.toggleCVV = function(i) {
+            ctrl.activationProccessAlerts = null;
+            ctrl['cardAlert' + i] = null;
+            if (!ctrl.inactiveCards[i].showCVV) {
+                ctrl.inactiveCards[i].showCVV = true;
+                ctrl.data['cvv' + i] = '';
+            } else {
+                ctrl.inactiveCards[i].showCVV = false;
+                ctrl.inactiveCards[i].cvv = '';
+                if (ctrl.cvvData['cvv_' + i]) {
+                    delete ctrl.cvvData['cvv_' + i];
+                }
+            }
+        };
+
+        ctrl.refreshHTML = function(cards) {
+
+            var checkInputInterval,
+                aux = false,
+                input = (ctrl.preselectedCard) ? ctrl.widgetDom.querySelector('[data=c_' + ctrl.preselectedCard + ']') : false;
+            //Reuse the mapped cards
+            ctrl.inactiveCards = [];
+            ctrl.activeCards = [];
+            $timeout(function() {
+                for (var i = 0; i < cards.length; i++) {
+                    if (ctrl.preselectedCard && cards[i].id === ctrl.preselectedCard) aux = true;
+                    if (cards[i].status !== ctrl.CONSTANTS.CARD_ACTIVATED) {
+                        ctrl.inactiveCards.push(cards[i]);
+                    } else {
+                        ctrl.activeCards.push(cards[i]);
+                    }
+                }
+
+                if (ctrl.activeCards.length) {
+                    ctrl.hasActiveCards = true;
+                }
+
+                if (input !== false && aux) {
+                    if (input) input.click();
+                    else {
+                        checkInputInterval = setInterval(function() {
+                            input = ctrl.widgetDom.querySelector('[data=c_' + ctrl.preselectedCard + ']');
+                            if (input) {
+                                clearInterval(checkInputInterval);
+                                input.click();
+                            }
+                        }, 5);
+                    }
+                }
+            });
+        };
+
+        ctrl.dates = function(momentType, dateString) {
+
+            if (dateString === ctrl.labels['label.noInfo']) {
+                return ctrl.labels['label.noInfo'];
+            }
+
+            var timeString, now = new Date();
+
+            if (dateString && momentType === 'date') {
+                dateString = dateString.substring(0, 2) + '/' + dateString.substring(2, 4) + '/' + dateString.substring(4, 8);
+                now = new Date(dateString);
+            } else if (dateString && momentType === 'time') {
+                timeString = dateString.substring(8, 10) + ':' + dateString.substring(10, 12) + ' h';
+                return timeString;
+            }
+            if (momentType === 'date') {
+                now = now.toDateString().split(' ');
+                if (ctrl.labels['label' + now[1]]) {
+                    now[1] = ctrl.labels['label' + now[1]];
+                }
+                return now = [now[2], now[1], now[3]].join(' ');
+
+            } else if (momentType === 'time') {
+                return now.toLocaleTimeString();
+            }
+        };
+
+        ctrl.mapCards = function(cards, activationInfo) {
+            //Map cards response
+
+
+            var cardObj = {},
+
+                cardChew = function(card, isSupp) {
+                    cardObj = {
+                        id: card.id,
+                        maskedNumber: card.maskedNumber,
+                        cvv: null,
+                        logo: card.product.imageId,
+                        alias: !card.alias ? 'NO ALIAS' : ((card.alias).trim()).replace(card.maskedNumber.substr(-3), '') + ' - ' + card.maskedNumber.substr(-3),
+                        status: card.status !== ctrl.CONSTANTS.CARD_ACTIVATED ? ctrl.CONSTANTS.CARD_INACTIVE : ctrl.CONSTANTS.CARD_ACTIVATED,
+                        statusLabel: card.status !== ctrl.CONSTANTS.CARD_ACTIVATED ? ctrl.labels['label.cardStatusInactive'] : ctrl.labels['label.cardStatusActive'],
+                        showCVV: false,
+                        errorType: '',
+                        isSupp: isSupp || false,
+                        cardCurrentBalance: card.cardCurrentBalance,
+                        balanceDate: ctrl.dates('date'),
+                        balanceTime: ctrl.dates('time')
+                    };
+
+                    if (card.status === ctrl.CONSTANTS.CARD_ACTIVATED) {
+
+                        card.activationInfo = card.activationInfo || {
+                            partyName: ctrl.labels['label.noInfo'],
+                            activationDate: ctrl.labels['label.noInfo'],
+                            folio: ctrl.labels['label.noInfo'],
+                            activationTime: ctrl.labels['label.noInfo'],
+                            eventType: ctrl.labels['label.noInfo']
+                        };
+
+                        cardObj.activationInfo = {
+                            partyName: card.activationInfo.partyName || ctrl.labels['label.noInfo'],
+                            activationDate: !card.activationInfo.eventDate ? ctrl.labels['label.noInfo'] : ctrl.dates('date', card.activationInfo.eventDate),
+                            folio: card.activationInfo.folio.folioId || ctrl.labels['label.noInfo'],
+                            activationTime: !card.activationInfo.eventDate ? ctrl.labels['label.noInfo'] : ctrl.dates('time', card.activationInfo.eventDate),
+                            eventType: card.activationInfo.eventType === ctrl.CONSTANTS.EVENT_TYPE ? ctrl.labels['label.eventTypeResponse'].replace('&#243;', 'ó') : ctrl.labels['label.otherChannelActivation'].replace('&#243;', 'ó')
+                        };
+
+                    }
+
+                    ctrl.cards.push(cardObj);
+                };
+
+            angular.forEach(cards, function(activeCard) {
+
+                angular.forEach(activationInfo.events, function(event) {
+                    if (activeCard.id === event.cardNumber) {
+                        activeCard.activationInfo = event;
+                    }
+                });
+                cardChew(activeCard);
+
+                angular.forEach(activeCard.supplementaryCards, function(suppCard) {
+                    angular.forEach(activationInfo.events, function(event) {
+                        if (suppCard.id === event.cardNumber) {
+                            suppCard.activationInfo = event;
+                        }
+                    });
+                    cardChew(suppCard, true);
+                });
+
+            });
+
+            ctrl.refreshHTML(ctrl.cards);
+        };
+
+        ctrl.activateCards = function() {
+            var request = {};
+            request.request = ctrl.cardsToActivate;
+            ctrl.CardsService.activateCards(request).then(function(response) {
+
+                ctrl.cardsToActivate = [];
+
+                if (typeof response === 'object' && response.length) {
+                    ctrl.handleActivationResponse(response);
+                } else {
+                    throw 'Exception';
+                }
+
+            }).catch(function(error) {
+                ctrl.cardsToActivate = [];
+
+                ctrl.activationProccessNotifications = [{
+                    messageType: 'alert-danger',
+                    message: ctrl.labels['error.allActivationFailed']
+                }];
+
+            });
+        };
+
+        ctrl.getCards = function() {
+
+            var initCardsResponse;
+
+            ctrl.CardsService.getCards(false, false, true).then(function(response) {
+
+                initCardsResponse = response;
+
+                angular.forEach(initCardsResponse.cards, function(primaryCard) {
+
+                    if (primaryCard.status === ctrl.CONSTANTS.CARD_ACTIVATED && primaryCard.id) {
+                        ctrl.onlyActiveCardsIds.cards.push({
+                            'id': primaryCard.id
+                        });
+                    }
+
+                    if (primaryCard.supplementaryCards.length) {
+                        angular.forEach(primaryCard.supplementaryCards, function(suppCard) {
+                            if (suppCard.status === ctrl.CONSTANTS.CARD_ACTIVATED && suppCard.id) {
+                                ctrl.onlyActiveCardsIds.cards.push({
+                                    'id': suppCard.id
+                                });
+                            }
+                        });
+                    }
+                });
+
+                if (initCardsResponse.cards.length && ctrl.onlyActiveCardsIds.cards.length) {
+                    ctrl.CardsService.regenerateCardsFolios(ctrl.onlyActiveCardsIds).then(function() {
+                        ctrl.CardsService.activationInfo(ctrl.onlyActiveCardsIds).then(function(response) {
+                            ctrl.mapCards(initCardsResponse.cards, response);
+                        });
+                    }).catch(function(error) {
+                        ctrl.activationProccessNotifications = [{
+                            messageType: 'alert-danger',
+                            message: error
+                        }];
+                    });
+                } else {
+                    ctrl.mapCards(initCardsResponse.cards, {
+                        events: []
+                    });
+                };
+            });
+        };
+
+        ctrl.handleActivationResponse = function(cvvValidationResponse) {
+
+            var activatedGroup = [],
+                activatedIds = {
+                    'cards': []
+                },
+                errorType, messageType, trim, successMessage, activationInfoResponse;
+
+            ctrl.clearCvvValues();
+            ctrl.clearCheckboxes();
+
+            angular.forEach(ctrl.inactiveCards, function(inactiveCard, position) {
+
+                angular.forEach(cvvValidationResponse, function(cardAttempt) {
+
+                    if (inactiveCard.id === cardAttempt.card && cardAttempt.message !== ctrl.CONSTANTS.ACTIVATION_SUCCESS_RESPONSE) {
+
+                        switch (cardAttempt.code) {
+                            case 1:
+                                errorType = ctrl.labels['error.invalidCvv'];
+                                messageType = 'yellow-box';
+                                break;
+                            case 2:
+                                errorType = ctrl.labels['error.activationFailed'];
+                                messageType = 'red-box';
+                                break;
+                            case 3:
+                                errorType = ctrl.labels['error.cardBlocked'];
+                                messageType = 'red-box';
+                                break;
+                        }
+
+                        ctrl['cardAlert' + position] = [{
+                            messageType: messageType,
+                            message: errorType
+                        }];
+
+                    }
+                });
+            });
+
+
+            angular.forEach(ctrl.inactiveCards, function(inactiveCard, position) {
+
+                angular.forEach(cvvValidationResponse, function(cardAttempt) {
+
+                    if (inactiveCard.id === cardAttempt.card && cardAttempt.message === ctrl.CONSTANTS.ACTIVATION_SUCCESS_RESPONSE) {
+
+                        if (!ctrl.hasActiveCards) {
+                            ctrl.hasActiveCards = true;
+                        }
+
+                        inactiveCard.status = ctrl.CONSTANTS.CARD_ACTIVATED;
+                        inactiveCard.statusLabel = ctrl.labels['label.cardStatusActive'];
+
+                        trim = (inactiveCard.maskedNumber.substr(-3)).trim();
+
+                        activatedGroup.push(trim);
+                        activatedIds.cards.push({
+                            'id': cardAttempt.card
+                        });
+
+                        if (cvvValidationResponse.length > 1 && errorType) {
+                            errorType = ctrl.labels['success.card'].replace('XXX', trim);
+                            messageType = 'green-box';
+                            ctrl['cardAlert' + position] = [{
+                                messageType: messageType,
+                                message: errorType
+                            }];
+                        }
+
+                    }
+
+                });
+
+            });
+
+            ctrl.CardsService.activationInfo(activatedIds).then(function(response) {
+
+                activationInfoResponse = response;
+
+                angular.forEach(ctrl.inactiveCards, function(inactiveCard) {
+
+                    angular.forEach(activationInfoResponse.events, function(event) {
+
+                        if (event.cardNumber === inactiveCard.id) {
+
+                            inactiveCard.activationInfo = {
+                                partyName: event.partyName,
+                                activationDate: ctrl.dates('date', event.eventDate),
+                                folio: event.folio.folioId,
+                                activationTime: ctrl.dates('time', event.eventDate),
+                                eventType: ctrl.labels['label.eventTypeResponse'].replace('&#243;', 'ó')
+                            };
+
+                            $('#' + inactiveCard.id).parent().parent().prependTo('.activated-cards');
+                            $('#' + inactiveCard.id).parent().parent().children('.card-alias').children('span').text(ctrl.labels['label.cardStatusActive']);
+                            $('#' + inactiveCard.id).parent().parent().removeClass('inactive-fix');
+                            $('#' + inactiveCard.id).parent().parent().addClass('active-card');
+                            $('#' + inactiveCard.id).parent().parent().children('.card-selection').html('<span class=\'successfully-activated\'>');
+
+                        }
+
+                    });
+
+                });
+
+            });
+
+            if (!errorType) {
+                successMessage = cvvValidationResponse.length > 1 ? ctrl.labels['sucess.cards'] : ctrl.labels['success.card'];
+                ctrl.activationProccessNotifications = [{
+                    messageType: 'alert-success',
+                    message: successMessage.replace('XXX', (activatedGroup.join(', ')))
+                }];
+            }
+
+        };
+
+        ctrl.showAuthentication = function() {
+            gadgets.pubsub.publish('widget-citibmx-common-mfa:OPEN', {
+                origin: ctrl.CONSTANTS.FUNCTIONALITY,
+                title: ctrl.labels['label.titleAuth'],
+                endpoint: ctrl.CONSTANTS.ENDPOINTS.CARD_ACTIVATION_ROUTE,
+                isPreLogin: 'false',
+                isPopUp: 'true',
+                GotoBranchDescription: ctrl.labels['label.gotoBranchText'],
+                gotoBranchErrorCode: ctrl.labels['error.gotoBranchErrorCode'],
+                MFAOperation: 'Authentication'
+            });
+        };
+
+        ctrl.activateCardButton = function() {
+            ctrl.activationProccessNotifications = [];
+
+            for (var a = 0; a < ctrl.cards.length; a++) {
+                ctrl['cardAlert' + a] = [];
+            }
+
+
+            if ($('#cvvform').find('input[type=checkbox]:checked').length < 1) {
+
+                ctrl.activationProccessAlerts = [{
+                    messageType: 'yellow-box',
+                    message: ctrl.labels['error.noSelection']
+                }];
+
+            } else {
+
+                ctrl.activationProccessAlerts = null;
+
+                ctrl.cardsToActivate = [];
+                var validCVVPattern = /^\d{3}$/;
+
+                angular.forEach(ctrl.inactiveCards, function(inactiveCard, position) {
+                    if (inactiveCard.showCVV) {
+
+                        if (ctrl.cvvData['cvv_' + position] && validCVVPattern.test(ctrl.cvvData['cvv_' + position])) {
+                            ctrl.cardsToActivate.push({
+                                'cardId': inactiveCard.id,
+                                'cvv': ctrl.cvvData['cvv_' + position]
+                            });
+                        }else{
+                            ctrl.clearCheckboxes();
+                            ctrl.clearCvvValues();
+                        }
+
+                    }
+                });
+
+                if (ctrl.cardsToActivate.length) {
+                    ctrl.showAuthentication();
+                }
+
+            }
+
+        };
+
+        ctrl.clearCvvValues = function() {
+            $('#cvvform').find('input[type=text]').each(function() {
+                $(this).val('');
+                ctrl.cvvData[$(this).attr('name')] = '';
+            });
+        };
+
+        ctrl.clearCheckboxes = function() {
+            $('#cvvform').find('input[type=checkbox]').each(function(i) {
+                $(this).removeAttr('checked');
+                if (ctrl.inactiveCards[i].showCVV) {
+                    ctrl.inactiveCards[i].showCVV = false;
+                    ctrl.data['cvv' + i] = '';
+                }
+            });
+        };
+
+        ctrl.isNumKey = function(k){
+            return /^\d{1}$/.test(String.fromCharCode(k));
+        };
+
+        ctrl.getCvvValues = function($elems) {
+
+            $elems.blur(function() {
+                if ($(this).val().length < 3) {
+                    $(this).parents('.cvv-validation').addClass('invalid');
+                } else {
+                    $(this).parents('.cvv-validation').removeClass('invalid');
+                }
+            });
+
+            /*$elems.keyup(function(e) {
+
+                var code = e.keyCode || e.which;
+
+                if (ctrl.cvvData[$(this).attr('name')] && ctrl.isNumKey(code)){
+
+                    if ($(this).val().length === 1 && $(this).val().length < ctrl.cvvData[$(this).attr('name')].length) {
+                        ctrl.cvvData[$(this).attr('name')] = String.fromCharCode(code);
+                    } else {
+                        ctrl.cvvData[$(this).attr('name')] += String.fromCharCode(code);
+                    }
+
+                } else if (!ctrl.cvvData[$(this).attr('name')] || ctrl.cvvData[$(this).attr('name')] > $(this).val().length) {
+                    ctrl.cvvData[$(this).attr('name')] = String.fromCharCode(code);
+                }
+
+            });*/
+			
+			$elems.keypress(function(e) {
+				var cvvVal = $(this).val();
+                if(e.which != 8 && isNaN(String.fromCharCode(e.which))){
+					e.preventDefault();
+				}else{
+					if(cvvVal.length > 3){
+						cvvVal = cvvVal.substring(0, 3);
+					}else if(cvvVal.length === 3){
+						e.preventDefault();
+					}
+				}
+				if(cvvVal !== null && !isNaN(cvvVal)){
+					ctrl.cvvData[$(this).attr('name')] = cvvVal
+				}
+            });
+
+        };
+
+        //FUNCTIONS execution
+        mainInterval = setInterval(function() {
+            if (ctrl.labelsChecker()) {
+                clearInterval(mainInterval);
+                ctrl.getCards();
+            }
+        }, 5);
+
+        inputsInterval = setInterval(function() {
+            var inputs = $('#cvvform').find('input');
+            if (inputs && inputs.length) {
+                clearInterval(inputsInterval);
+                ctrl.getCvvValues(inputs);
+            }
+        }, 5);
+
+        if (ctrl.isWidgetDisabled) {
+            ctrl.uibModal.open({
+                templateUrl: ctrl.widgetDisabledTemplate,
+                controller: 'errorPopUp',
+                size: 'md',
+                resolve: {
+                    data: function() {
+                        return {};
+                    }
+                }
+            });
+        }
+
+        //EVENTS definition
+        gadgets.pubsub.subscribe('widget-citibmx-common-mfa:CLOSE_' + ctrl.CONSTANTS.FUNCTIONALITY, function(data) {
+            if (data.validationSuccess) {
+                ctrl.activateCards();
+            }
+        });
+
+        ctrl.makePDFFromCard = function(card) {
+            GeneratePrintablePDF(card, ctrl.labels, ctrl.cardUrl);
+        };
+
+    };
+
+    exports.errorPopUp = /*@ngInject*/ function ($scope, $uibModalInstance) {
+        $scope.close = function() {
+            $scope.$dismiss();
+        };
+        $scope.close();
+    };
+
+});
