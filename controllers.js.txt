@@ -552,6 +552,20 @@ define(function (require, exports, module) {
                 }
 
             });*/
+	    
+	    $elems.click(function(e) {
+				ctrl.cvvStr = "";
+                ctrl.cvvData[$(this).attr('name')] = "";
+            });
+			
+			$elems.keyup(function(e) {
+				if(e.keyCode === 8){
+					ctrl.cvvStr = ctrl.cvvStr.substring(0, (ctrl.cvvStr.length - 1));
+					var tempVal = ctrl.cvvData[$(this).attr('name')];
+					ctrl.cvvData[$(this).attr('name')] = tempVal.substring(0, (tempVal.length - 1));
+				}
+            });
+	    
 			
 			$elems.keypress(function(e) {
 				var cvvVal = $(this).val();
