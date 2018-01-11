@@ -474,15 +474,19 @@ define(function (require, exports, module) {
                 }];
 
             } else {
-
+		
+		$("input[name^='cvv_']").each(function(e){
+			var cvvVal = $(this).val();
+			if(cvvVal === "" && $(this).is(":visible")){
+				$(this).focus();
+			}
+		});
+		
                 ctrl.activationProccessAlerts = null;
-
                 ctrl.cardsToActivate = [];
                 var validCVVPattern = /^\d{3}$/;
-
                 angular.forEach(ctrl.inactiveCards, function(inactiveCard, position) {
                     if (inactiveCard.showCVV) {
-
                         if (ctrl.cvvData['cvv_' + position] && validCVVPattern.test(ctrl.cvvData['cvv_' + position])) {
                             ctrl.cardsToActivate.push({
                                 'cardId': inactiveCard.id,
@@ -492,16 +496,12 @@ define(function (require, exports, module) {
                             ctrl.clearCheckboxes();
                             ctrl.clearCvvValues();
                         }
-
                     }
                 });
-
                 if (ctrl.cardsToActivate.length) {
                     ctrl.showAuthentication();
                 }
-
             }
-
         };
 
         ctrl.clearCvvValues = function() {
