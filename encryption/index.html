@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="rollups/aes.js"></script>
+
+<script>
+$(document).ready(function(){
+    var encryptedAES = CryptoJS.AES.encrypt("My Secret Passphrase", "0E984725-C51C-4BF4-9960-E1C80E27ABA0", "0E984725-C51C-4BF4-9960-E1C80E27ABA1");
+    var decryptedBytes = CryptoJS.AES.decrypt(encryptedAES, "0E984725-C51C-4BF4-9960-E1C80E27ABA0", "0E984725-C51C-4BF4-9960-E1C80E27ABA1");
+    var plaintext = decryptedBytes.toString(CryptoJS.enc.Utf8);
+    $("#plaintext").html(plaintext);
+});
+</script>
+</head>
+<body>
+<div id="plaintext"></div>
+https://stackoverflow.com/questions/17511279/c-sharp-aes-decryption
+
+https://gist.github.com/magicsih/be06c2f60288b54d9f52856feb96ce8c
+
+</body>
+</html>
