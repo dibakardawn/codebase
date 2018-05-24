@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    
+});
+
+function attendenceFunc(id){
+	if($("#" + id).prop('checked')){
+		alert($("#" + id).val());
+	}
+}
+function selectAll(colIndex, id){
+	if($("#" + id).prop('checked')){
+		$("#myTable tbody td:nth-child(" + colIndex + ") input").prop("checked", true);
+	}else{
+		$("#myTable tbody td:nth-child(" + colIndex + ") input").prop("checked", false);
+	}
+}
+</script>
+<style>
+table, th, td {
+   border: 1px solid #EEE;
+}
+</style>
+</head>
+<body>
+<table id="myTable">
+	<tr>
+		<th>1<input id="checkbox_1" type="checkbox" name="attendence" value="1" onClick="selectAll(1, this.id)"></th>
+		<th>2<input id="checkbox_2" type="checkbox" name="attendence" value="2" onClick="selectAll(2, this.id)"></th>
+	</tr>
+	<tr>
+		<td><input id="checkbox_1_1" type="checkbox" name="attendence" value="11" onClick="attendenceFunc(this.id)"></td>
+		<td><input id="checkbox_1_2" type="checkbox" name="attendence" value="12" onClick="attendenceFunc(this.id)"></td>
+	</tr>
+	<tr>
+		<td><input id="checkbox_2_1" type="checkbox" name="attendence" value="21" onClick="attendenceFunc(this.id)"></td>
+		<td><input id="checkbox_2_2" type="checkbox" name="attendence" value="22" onClick="attendenceFunc(this.id)"></td>
+	</tr>
+	<tr>
+		<td><input id="checkbox_3_1" type="checkbox" name="attendence" value="31" onClick="attendenceFunc(this.id)"></td>
+		<td><input id="checkbox_3_2" type="checkbox" name="attendence" value="32" onClick="attendenceFunc(this.id)"></td>
+	</tr>
+	<tr>
+		<td><input id="checkbox_4_1" type="checkbox" name="attendence" value="41" onClick="attendenceFunc(this.id)"></td>
+		<td><input id="checkbox_4_2" type="checkbox" name="attendence" value="42" onClick="attendenceFunc(this.id)"></td>
+	</tr>
+</table>
+</body>
+</html>
