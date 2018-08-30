@@ -1,1 +1,3 @@
 http://jayantpaliwal.com/2016/11/setup-firebase-push-notification-in-phonegap-app/
+
+https://www.npmjs.com/package/cordova-plugin-firebase
