@@ -1,0 +1,1 @@
+http://jayantpaliwal.com/2016/11/setup-firebase-push-notification-in-phonegap-app/
