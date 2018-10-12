@@ -1,0 +1,6 @@
+https://github.com/angular-ui/ui-router/issues/2032
+
+https://stackoverflow.com/questions/35787016/angularjs-locationprovider-html5mode-not-working-on-localhost
+
+https://stackoverflow.com/questions/14771091/removing-the-fragment-identifier-from-angularjs-urls-symbol
+
