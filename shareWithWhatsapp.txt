@@ -1,5 +1,0 @@
-https://stackoverflow.com/questions/28809408/phonegap-and-whatsapp
-
-
-var regex = /^[a-z\d,]*\.?[a-z\d,]*$/gmi;
-regex.exec('12.25')
