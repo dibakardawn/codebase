@@ -1,1 +1,0 @@
-https://uat2.hkmobile.globalcommonbuild.citibank.com/GMP/JSO/presignon/deeplink.action?page=EBRKTradeNow&stockCode=1234&AAStockPageName=abc
