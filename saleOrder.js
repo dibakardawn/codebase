@@ -1,12 +1,7 @@
 const MENUSELECTIONITEM = "saleOrders.php";
 const inputDelay = 500;
 const BARQRREGEX = new RegExp(`^${SITETITLE}_?`);
-let SEARCHCUSTOMERCRITERIA = {
-    keyword: "",
-    companyTypeId: "",
-    customerGrade: "",
-    status: 1
-};
+const SEARCHCUSTOMERCRITERIA = { keyword: "", companyTypeId: "", customerGrade: "", status: 1 };
 let isCoCOrder = false;
 let ORDEROBJ = [];
 let PRODUCTSTOCKSYSREF = {};
@@ -18,34 +13,24 @@ let BRANDS = [];
 let CATEGORIES = [];
 let SELECTEDCATEGORYIDARR = [];
 let PRODUCTS = [];
-let SEARCHSALEORDERCRITERIA = {
-    keyword: "",
-    status: 1
-};
+const SEARCHSALEORDERCRITERIA = { keyword: "", status: 1 };
 const PAGEDOCNAME = window.location.pathname.split('/').pop();
 
-$(document).ready(function () {
+$(document).ready(() => {
     $('.w3-bar-block > a').each(function () {
         if ($(this).attr("href") === MENUSELECTIONITEM) {
             $(this).addClass("w3-blue");
         }
     });
 
-    switch (PAGEDOCNAME) {
-        case "saleOrders.php":{
-            saleOrderFunctionality.initSaleOrder();
-            break;
-		}
-		
-        case "saleOrderEntry.php":{
-            saleOrderFunctionality.initSaleOrdersEntry();
-            break;
-		}
-		
-        case "saleOrderDetail.php":{
-            saleOrderFunctionality.initSaleOrderDetail();
-            break;
-		}
+    const pageFunctions = {
+        "saleOrders.php": saleOrderFunctionality.initSaleOrder,
+        "saleOrderEntry.php": saleOrderFunctionality.initSaleOrdersEntry,
+        "saleOrderDetail.php": saleOrderFunctionality.initSaleOrderDetail
+    };
+    
+    if (pageFunctions[PAGEDOCNAME]) {
+        pageFunctions[PAGEDOCNAME]();
     }
 
     appCommonFunctionality.cmsImplementationThroughID();
@@ -55,17 +40,23 @@ $(document).ready(function () {
 const saleOrderFunctionality = (function (window, $) {
     const parent = {};
 
-    parent.initSaleOrder = function () {
+    parent.initSaleOrder = () => appCommonFunctionality.adjustMainContainerHight('saleOrderSectionHolder');
+
+    parent.addSaleOrder = () => window.location = `saleOrderEntry.php`;
+
+    parent.initSaleOrdersEntry = () => {
         appCommonFunctionality.adjustMainContainerHight('saleOrderSectionHolder');
+        setupCustomerSearch();
+        setupProductStock();
+        setupScannerGun();
+        if (!appCommonFunctionality.isMobile()) {
+            $('#addProductQRScannerCam').prop('disabled', true);
+        }
+        BRANDS = JSON.parse($('#productBrandSerializedData').val());
+        CATEGORIES = JSON.parse($('#productCatSerializedData').val());
     };
 
-    parent.addSaleOrder = () => {
-        window.location = `saleOrderEntry.php`;
-    };
-
-    parent.initSaleOrdersEntry = function () {
-        appCommonFunctionality.adjustMainContainerHight('saleOrderSectionHolder');
-
+    const setupCustomerSearch = () => {
         $("#customerSearch").on('keyup', function () {
             const customerSearchKeyword = $(this).val();
             if (customerSearchKeyword.length > 2) {
@@ -77,12 +68,15 @@ const saleOrderFunctionality = (function (window, $) {
                 $('#customerSearchResult').html('');
             }
         });
+    };
 
+    const setupProductStock = () => {
         if ($("#productStockPreCompileData").val() !== "") {
             PRODUCTSTOCKSYSREF = JSON.parse($("#productStockPreCompileData").val());
         }
-		
-		/*----------------------Scanner device implementation-----------------------------*/
+    };
+
+    const setupScannerGun = () => {
         let debounceTimer;
         $('#scannerGunData').on('input', function () {
             clearTimeout(debounceTimer);
@@ -91,45 +85,26 @@ const saleOrderFunctionality = (function (window, $) {
                 captureProductCombinationFromBarQrCode(scannerGunDataValue);
             }, inputDelay);
         });
-		/*----------------------Scanner device implementation-----------------------------*/
-		
-		if(!appCommonFunctionality.isMobile()){
-			$('#addProductQRScannerCam').prop('disabled', true);
-		}
-		
-		BRANDS = JSON.parse($('#productBrandSerializedData').val());
-		CATEGORIES = JSON.parse($('#productCatSerializedData').val());
     };
 
-    const populateCustomerSuggestionBox = function (data) {
-        $('#customerGroupAddonIcon').removeClass('fa-spinner fa-spin').addClass('fa-search');
+    const populateCustomerSuggestionBox = (data) => {
         const customerData = JSON.parse(data);
         const customerResultItemClass = appCommonFunctionality.isMobile() ? 'customerResultItem-Mob' : 'customerResultItem';
         let str = '';
 
         if (customerData.length > 0) {
-            customerData.forEach(customer => {
-                const customerId = customer.customerId;
-                const customerGrade = customer.customerGrade;
-
-                str += `<div id="customerResultItem_${customerId}" class="${customerResultItemClass} hover" onclick="saleOrderFunctionality.onSelectingCustomer(${customerId}, '${customerGrade}')">`;
-
-                if (customer.companyName.toLowerCase() === COMPANYTYPECoC.toLowerCase()) {
-                    str += `<div class="f16">${customer.companyName}</div>`;
-                } else {
-                    str += `<div class="f16">${customer.companyName} (${getCompanyType(customer.companyType)}) [${customerGrade}]</div>
-                            <div class="f12">
-                                <strong><span id="cms_314">${appCommonFunctionality.getCmsString(314)}</span>: </strong>
-                                <span class="blueText">${customer.buyerName}</span><br>
-                                <strong><span id="cms_315">${appCommonFunctionality.getCmsString(315)}</span>: </strong>
-                                <span class="blueText">${customer.contactPerson}</span>
+            customerData.forEach(({customerId, customerGrade, companyName, companyType, buyerName, contactPerson, phone, email}) => {
+                str += `<div id="customerResultItem_${customerId}" class="${customerResultItemClass} hover" onclick="saleOrderFunctionality.onSelectingCustomer(${customerId}, '${customerGrade}')">
+                    <div class="f16">${companyName} (${getCompanyType(companyType)}) [${customerGrade}]</div>
+                    <div class="f12">
+                        <strong>${appCommonFunctionality.getCmsString(314)}: </strong><span class="blueText">${buyerName}</span><br>
+                        <strong>${appCommonFunctionality.getCmsString(315)}: </strong><span class="blueText">${contactPerson}</span>
+                    </div>`;
+                if (!appCommonFunctionality.isMobile()) {
+                    str += `<div class="f12">
+                                <i class="fa fa-phone blueText"></i> ${phone}<br>
+                                <i class="fa fa-envelope greenText"></i> <span class="blueText">${email}</span>
                             </div>`;
-                    if (!appCommonFunctionality.isMobile()) {
-                        str += `<div class="f12">
-                                    <i class="fa fa-phone blueText"></i> ${customer.phone}<br>
-                                    <i class="fa fa-envelope greenText"></i> <span class="blueText">${customer.email}</span>
-                                </div>`;
-                    }
                 }
                 str += `</div>`;
             });
@@ -138,6 +113,7 @@ const saleOrderFunctionality = (function (window, $) {
         }
 
         $("#customerSearchResult").html(str);
+        $("#customerGroupAddonIcon").removeClass('fa-spinner fa-spin').addClass('fa-search');
         $("#selectedCustomerTitle, #saleOrderControlButtonHolder, #totalCalcSection").addClass('hide');
         $("#selectedCustomerSection, #customerDeliveryAddressTableHolder").html('');
         if (isCoCOrder) {
@@ -145,7 +121,7 @@ const saleOrderFunctionality = (function (window, $) {
         }
     };
 
-    parent.onSelectingCustomer = function (customerId, customerGrade) {
+    parent.onSelectingCustomer = (customerId, customerGrade) => {
         $("#selectedCustomerId").val(customerId);
         $("#selectedCustomerGrade").val(customerGrade);
         const customerResultItemClass = appCommonFunctionality.isMobile() ? 'customerResultItem-Mob' : 'customerResultItem';
@@ -155,21 +131,20 @@ const saleOrderFunctionality = (function (window, $) {
         appCommonFunctionality.ajaxCall(`GETDELIVERYADDRESSES&customerId=${customerId}`, bindCustomerDeliveryAddressTable);
     };
 
-    const bindCustomerDeliveryAddressTable = function (data) {
+    const bindCustomerDeliveryAddressTable = (data) => {
         const customerDeliveryAddressData = JSON.parse(data);
-        let str = `<table id="customerDeliveryAddressTable" class="w3-table w3-striped w3-bordered w3-hoverable w3-white"><tbody><tr><td width="100%"><strong id="cms_316">${appCommonFunctionality.getCmsString(316)}</strong></td></tr>`;
+        let str = `<table id="customerDeliveryAddressTable" class="w3-table w3-striped w3-bordered w3-hoverable w3-white">
+                    <tbody><tr><td width="100%"><strong>${appCommonFunctionality.getCmsString(316)}</strong></td></tr>`;
 
         if (customerDeliveryAddressData.length > 0) {
-            if (customerDeliveryAddressData[0].companyName.toLowerCase() === COMPANYTYPECoC.toLowerCase()) {
-                const data = customerDeliveryAddressData[0];
-                str += `<tr class="f12"><td width="100%">${data.companyName}</td></tr>`;
-            } else {
-				let isFirst = true;
-                customerDeliveryAddressData.forEach((data, index) => {
-					str += `<tr class="f12"><td width="100%"><input type="radio" id="deliveryAddress_${data.deliveryAddressId}" name="deliveryAddress_${data.companyName}" class="marRig5" value="${data.deliveryAddressId}" ${isFirst ? 'checked' : ''} onchange="saleOrderFunctionality.onSelectCustomerDeliveryAddressId(${data.deliveryAddressId})"><b rel="cms_322">Company Name</b>: ${data.companyName} | <b rel="cms_323">Contact person</b>: ${data.contactPerson} | <b rel="cms_324">Phone</b>: ${data.phone} | <b>Email</b>: <a href="mailto: ${data.email}" class="blueText">${data.email}</a> | <b rel="cms_325">Address</b>: ${data.address} | <b rel="cms_326">Town</b>: ${data.town} | <b>Postcode</b>: ${data.postCode} | <b rel="cms_327">Country</b>: <span>${appCommonFunctionality.getCountryName(data.country, true)}</span></td></tr>`;
-                    isFirst = false;
-                });
-            }
+            customerDeliveryAddressData.forEach(({ deliveryAddressId, companyName }) => {
+                str += `<tr class="f12">
+                            <td width="100%">
+                                <input type="radio" id="deliveryAddress_${deliveryAddressId}" name="deliveryAddress_${companyName}" class="marRig5" value="${deliveryAddressId}" onclick="saleOrderFunctionality.onSelectCustomerDeliveryAddressId(${deliveryAddressId})">
+                                ${companyName}
+                            </td>
+                        </tr>`;
+            });
         } else {
             str += '<tr class="f12"><td colspan="2">No Data</td></tr>';
         }
@@ -178,11 +153,11 @@ const saleOrderFunctionality = (function (window, $) {
         $("#saleOrderControlButtonHolder").removeClass('hide');
     };
 
-    parent.onSelectCustomerDeliveryAddressId = function (deliveryAddressId) {
+    parent.onSelectCustomerDeliveryAddressId = (deliveryAddressId) => {
         $("#selectedCustomerDeliveryAddressId").val(deliveryAddressId);
     };
 
-    parent.mapCoCOrder = function () {
+    parent.mapCoCOrder = () => {
         isCoCOrder = true;
         SEARCHCUSTOMERCRITERIA.keyword = COMPANYTYPECoC;
         $("#customerSearch").val('');
@@ -190,51 +165,35 @@ const saleOrderFunctionality = (function (window, $) {
         appCommonFunctionality.ajaxCallLargeData('GETCUSTOMERS', SEARCHCUSTOMERCRITERIA, populateCustomerSuggestionBox);
     };
 
-    const getCompanyType = function (companyTypeId) {
+    const getCompanyType = (companyTypeId) => {
         const companyTypeSerializedData = JSON.parse($("#companyTypeSerializedData").val() || "[]");
         const companyType = companyTypeSerializedData.find(item => parseInt(item.companyTypeId) === parseInt(companyTypeId));
         return companyType ? companyType.companyType : '';
     };
 
-    parent.scannerGun = function () {
-        $("#scannerGunData").val('').focus();
-    };
+    parent.scannerGun = () => $("#scannerGunData").val('').focus();
 
-    const captureProductCombinationFromBarQrCode = function (scannerGunDataValue) {
-        let productFound = false;
+    const captureProductCombinationFromBarQrCode = (scannerGunDataValue) => {
         if (PRODUCTSTOCKSYSREF.length > 0 && scannerGunDataValue !== '') {
-            PRODUCTSTOCKSYSREF.some(product => {
-                if (product.systemReference.toLowerCase() === scannerGunDataValue.toLowerCase()) {
-                    ORDEROBJ.push(product);
-                    productFound = true;
-                    saleOrderFunctionality.scannerGun();
-                    return true;
-                }
-                return false;
-            });
-
-            if (!productFound) {
+            const product = PRODUCTSTOCKSYSREF.find(product => product.systemReference.toLowerCase() === scannerGunDataValue.toLowerCase());
+            if (product) {
+                ORDEROBJ.push(product);
+                saleOrderFunctionality.scannerGun();
+            } else {
                 $("#productScannerErr").html(appCommonFunctionality.getCmsString(328));
-                $('#scanningErrorAudio')[0].play().catch(error => {
-                    console.error('Error playing audio:', error);
-                });
-				setTimeout(function() {
-					$('#productScannerErr').html('');
-				}, 3000);
+                $('#scanningErrorAudio')[0].play().catch(console.error);
+                setTimeout(() => $('#productScannerErr').html(''), 3000);
                 saleOrderFunctionality.scannerGun();
             }
             saleOrderFunctionality.populateCart();
         }
     };
-	
-    parent.populateCart = function () {
-        const displayOrderArr = [];
+
+    parent.populateCart = () => {
         const orderMap = new Map();
 
         ORDEROBJ.forEach(order => {
-            const productId = parseInt(order.productId);
-            const productCombinationId = parseInt(order.productCombinationId);
-            const key = `${productId}-${productCombinationId}`;
+            const key = `${order.productId}-${order.productCombinationId}`;
 
             if (orderMap.has(key)) {
                 orderMap.get(key).qty += 1;
@@ -243,19 +202,29 @@ const saleOrderFunctionality = (function (window, $) {
             }
         });
 
-        displayOrderArr.push(...orderMap.values());
+        const displayOrderArr = Array.from(orderMap.values());
+        let totalBeforeTax = displayOrderArr.reduce((acc, { productTitle, productCode, qty, RPrice, WPrice }) => {
+            const selectedCustomerGrade = $("#selectedCustomerGrade").val().toLowerCase();
+            const effectivePrice = selectedCustomerGrade === 'r' ? RPrice : selectedCustomerGrade === 'w' ? WPrice : 0;
 
-        let totalPrice = 0;
-        let totalBeforeTax = 0;
-        let str = `<table class="w3-table w3-striped w3-bordered w3-hoverable w3-white minW720"><tbody><tr><td width="80%"><b>${appCommonFunctionality.getCmsString(329)}</b></td><td width="10%"><b>Qty</b></td><td width="10%"><b>${appCommonFunctionality.getCmsString(330)}</b></td></tr>`;
+            return acc + (effectivePrice * qty);
+        }, 0);
+
+        let totalPrice = totalBeforeTax + ((totalBeforeTax * DEFAULTTAX) / 100);
+
+        let str = `<table class="w3-table w3-striped w3-bordered w3-hoverable w3-white minW720">
+                    <tbody><tr><td width="80%"><b>${appCommonFunctionality.getCmsString(329)}</b></td><td width="10%"><b>Qty</b></td><td width="10%"><b>Price</b></td></tr>`;
 
         if (displayOrderArr.length > 0) {
-            displayOrderArr.forEach(item => {
+            displayOrderArr.forEach(({ productTitle, productCode, qty, RPrice, WPrice }) => {
                 const selectedCustomerGrade = $("#selectedCustomerGrade").val().toLowerCase();
-                const effectivePrice = selectedCustomerGrade === 'r' ? item.RPrice : selectedCustomerGrade === 'w' ? item.WPrice : 0;
+                const effectivePrice = selectedCustomerGrade === 'r' ? RPrice : selectedCustomerGrade === 'w' ? WPrice : 0;
 
-                str += `<tr><td><div class="pull-left f12 marleft5"><span>${item.productTitle} [${item.productCode}] ${appCommonFunctionality.getDefaultCurrency()}${effectivePrice}</span><br><span>[${item.productCombinationId}] - ${getQRTextHtml(item.productCombinationQR, item.productCode)}</span></div></td><td>x ${item.qty}</td><td>${appCommonFunctionality.getDefaultCurrency()}${(effectivePrice * item.qty).toFixed(2)}</td></tr>`;
-                totalBeforeTax += effectivePrice * item.qty;
+                str += `<tr>
+                            <td><div class="pull-left f12 marleft5"><span>${productTitle} [${productCode}] ${appCommonFunctionality.getDefaultCurrency()}${effectivePrice}</span><br><span>[${getQRTextHtml(productCode)}]</span></div></td>
+                            <td>${qty}</td>
+                            <td>${appCommonFunctionality.getDefaultCurrency()}${(effectivePrice * qty).toFixed(2)}</td>
+                        </tr>`;
             });
         } else {
             str += '<tr><td colspan="3">No Data</td></tr>';
@@ -263,192 +232,153 @@ const saleOrderFunctionality = (function (window, $) {
 
         str += '</tbody></table>';
         $("#cartTableHolder").html(str);
-		if (displayOrderArr.length > 0) {
-			$("#totalCalcSection").removeClass('hide');
-			$("#totalBeforeTax").html(appCommonFunctionality.getDefaultCurrency() + totalBeforeTax.toFixed(2));
-			$("#taxP").html(DEFAULTTAX);
-			totalPrice = totalBeforeTax + ((totalBeforeTax * DEFAULTTAX) / 100);
-			$("#totalPrice").html(appCommonFunctionality.getDefaultCurrency() + totalPrice.toFixed(2));
-		}
+        if (displayOrderArr.length > 0) {
+            $("#totalCalcSection").removeClass('hide');
+            $("#totalBeforeTax").html(appCommonFunctionality.getDefaultCurrency() + totalBeforeTax.toFixed(2));
+            $("#taxP").html(DEFAULTTAX);
+            $("#totalPrice").html(appCommonFunctionality.getDefaultCurrency() + totalPrice.toFixed(2));
+        }
     };
 
-    const getQRTextHtml = function (QRText, productCode) {
-        var str = '';
-		var QRTextArr1 = QRText.split('_');
-		QRText = QRTextArr1[0].replace((productCode + '-'), '');
-		var QRTextArr2 = QRText.split('X');
-		for(var i = 0; i < QRTextArr2.length; i++){
-			if(QRTextArr2[i] !== ''){
-				var featureValArr = QRTextArr2[i].split(':');
-				if(featureValArr[0].toLowerCase() === 'color'){
-					str = str + featureValArr[0] + ' : <i class="fa fa-square marRig5 marleft5" style="color:#' + featureValArr[1] + '"></i>';
-				}else{
-					str = str + featureValArr[0] + ': ' + featureValArr[1];
-				}
-				if((i < (QRTextArr2.length - 1)) && (QRTextArr2[i + 1] !== '')){
-					str = str + '<i class="fa fa fa-remove blueText marRig5 marleft5"></i>';
-				}
-			}
-		}
-		return str;
+    const getQRTextHtml = (QRText, productCode) => {
+        const QRTextArr1 = QRText.split('_');
+        let QRText = QRTextArr1[0].replace((productCode + '-'), '');
+        const QRTextArr2 = QRText.split('X');
+        return QRTextArr2.reduce((str, featureVal) => {
+            if (featureVal !== '') {
+                const [feature, value] = featureVal.split(':');
+                str += feature.toLowerCase() === 'color'
+                    ? `${feature} : <i class="fa fa-square marRig5 marleft5" style="color:#${value}"></i>`
+                    : `${feature}: ${value}`;
+                str += (i < (QRTextArr2.length - 1)) && (QRTextArr2[i + 1] !== '') ? '<i class="fa fa fa-remove blueText marRig5 marleft5"></i>' : '';
+            }
+            return str;
+        }, '');
     };
-	
-	parent.openQrScannerCamera = function() {
-		const top = 50;
-		const left = 16;
-		const width = ($(window).width() - (left * 2)) * 0.9;
-		const height = 348;
 
-		const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`;
-		let qrCodeScannerCameraPopupWindow = window.open(qrScannerCameraUrl, "qrCodeScannerCameraPopupWindow", features);
+    parent.openQrScannerCamera = () => {
+        const top = 50;
+        const left = 16;
+        const width = ($(window).width() - (left * 2)) * 0.9;
+        const height = 348;
 
-		let qrCodeScannerCameraPopupCheckInterval = setInterval(() => {
-			if (qrCodeScannerCameraPopupWindow.closed) {
-				clearInterval(qrCodeScannerCameraPopupCheckInterval);
+        const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`;
+        qrCodeScannerCameraPopupWindow = window.open(qrScannerCameraUrl, "qrCodeScannerCameraPopupWindow", features);
 
-				let scannerQRCodes = JSON.parse(localStorage.getItem("scannerQRCodes")) || [];
-				//alert(JSON.stringify(scannerQRCodes)); //alert whole array of scanned codes
-				if (scannerQRCodes.length > 0) {
-					scannerQRCodes.forEach(code => {
-						let scannerQRCode = code.replace(BARQRREGEX, '');
-						//alert(scannerQRCode); //alert individual scanned code
-						captureProductCombinationFromBarQrCode(scannerQRCode);
-					});
-					localStorage.removeItem("scannerQRCodes");
-				}
-			}
-		}, 500);
+        qrCodeScannerCameraPopupCheckInterval = setInterval(() => {
+            if (qrCodeScannerCameraPopupWindow.closed) {
+                clearInterval(qrCodeScannerCameraPopupCheckInterval);
+                scannerQRCodes = JSON.parse(localStorage.getItem("scannerQRCodes")) || [];
+                if (scannerQRCodes.length > 0) {
+                    scannerQRCodes.forEach(code => {
+                        let scannerQRCode = code.replace(BARQRREGEX, '');
+                        captureProductCombinationFromBarQrCode(scannerQRCode);
+                    });
+                    localStorage.removeItem("scannerQRCodes");
+                }
+            }
+        }, 500);
+    };
+
+    parent.brandPedectiveSearch = (searchedText) => {
+        $('#searchBrandIconSpan').html('<span class="fa fa-spinner fa-spin hover"></span>');
+        if (BRANDS.length > 0 && searchedText.length > 2) {
+            const searchedBrandObjArray = BRANDS.filter(({ brandName }) => brandName.toLowerCase().includes(searchedText.toLowerCase()));
+            const str = searchedBrandObjArray.reduce((html, { brandId, brandName }) => {
+                return html + `<div class="searchedItem hover" onclick="saleOrderFunctionality.onBrandSelection(${brandId})"><span class="padLeft4">${brandName}</span></div>`;
+            }, '');
+            $('#searchedBrands').html(str).removeClass('hide');
+            $('#searchBrandIconSpan').html('<span class="fa fa-search hover"></span>');
+        } else {
+            $('#searchedBrands').html('').addClass('hide');
+            $('#searchBrandIconSpan').html('<span class="fa fa-search hover"></span>');
+        }
+    };
+
+    parent.onBrandSelection = (brandId) => {
+        $('#brandId').val(brandId);
+        $('#searchedBrands').html('').addClass('hide');
+        $('#searchBrand').val('');
+        saleOrderFunctionality.populateSelectedBrand(brandId);
+    };
+
+    parent.populateSelectedBrand = (brandId) => {
+        if (brandId > 0) {
+            const brand = BRANDS.find(({ brandId: id }) => parseInt(id) === parseInt(brandId));
+            if (brand) {
+                const str = `<div id="cms_45">Selected Brand : </div>
+                             <div class="selectedBrandItem">
+                                <div><span class="marleft5"><b>${brand.brandName}</b></span></div>
+                                <div><span class="pull-right fa fa-remove redText hover" onclick="saleOrderFunctionality.removeBrandSelection();"></span></div>
+                             </div>`;
+                $('#selectedBrandItem').html(str);
+            }
+        }
+    };
+
+    parent.removeBrandSelection = () => {
+        $('#brandId').val(0);
+        $('#selectedBrandItem').html('');
+        $('#searchBrand').focus();
+    };
+
+    parent.categoryPedectiveSearch = (searchedText) => {
+        $('#searchCatIconSpan').html('<span class="fa fa-spinner fa-spin hover"></span>');
+        if (CATEGORIES.length > 0 && searchedText.length > 2) {
+            const searchedCatObjArray = CATEGORIES.filter(({ category }) => category.toLowerCase().includes(searchedText.toLowerCase()));
+            const str = searchedCatObjArray.reduce((html, { categoryId, category }) => {
+                return html + `<div class="searchedItem hover" onclick="saleOrderFunctionality.onCatSelection(${parseInt(categoryId)}, this)"><span class="padLeft4">${category}</span></div>`;
+            }, '');
+            $('#searchedCats').html(str).removeClass('hide');
+            $('#searchCatIconSpan').html('<span class="fa fa-close redText hover" onClick="saleOrderFunctionality.resetSearchCatField();"></span><span class="fa fa-search marleft5 hover"></span>');
+        } else {
+            if (searchedText.length === 0) {
+                $('#searchedCats').html('').addClass('hide');
+                $('#searchCat').val('');
+                $('#searchCatIconSpan').html('<span class="fa fa-search hover"></span>');
+            }
+        }
+    };
+
+    parent.resetSearchCatField = () => {
+        $("#searchCat").val('');
+        $('#searchedCats').html('').addClass('hide');
+    };
+
+    parent.onCatSelection = (catId, selfObj) => {
+        if (catId > 0 && !SELECTEDCATEGORYIDARR.includes(parseInt(catId))) {
+            SELECTEDCATEGORYIDARR.push(parseInt(catId));
+            $("#categoryIds").val(SELECTEDCATEGORYIDARR.toString());
+            if (selfObj !== null) {
+                $(selfObj).hide();
+            }
+            saleOrderFunctionality.populateSelectedCategories();
+        }
+    };
+
+    parent.populateSelectedCategories = function() {
+		const selectedCategoriesHTML = CATEGORIES.filter(category => 
+			SELECTEDCATEGORYIDARR.includes(parseInt(category.categoryId))
+		).map(category => `
+			<div class="selectedCatItem">
+				<span class="fa fa-tags darkGreyText"></span>
+				<span class="marleft5">${category.category}</span>
+				<span class="fa fa-remove redText hover marleft5" onclick="saleOrderFunctionality.removeCatSelection(${parseInt(category.categoryId)});"></span>
+			</div>
+		`).join('');
+
+		$('#selectedCatItem').html(selectedCategoriesHTML);
 	};
-	
-	parent.brandPedectiveSearch = function(searchedText){
-		$('#searchBrandIconSpan').html('<span class="fa fa-spinner fa-spin hover"></span>');
-		if(BRANDS.length > 0 && searchedText.length > 2){
-			var searchedBrandObjArray = [];
-			for(var i = 0; i < BRANDS.length; i++){
-				if((BRANDS[i].brandName.toLowerCase()).indexOf(searchedText.toLowerCase()) !== -1){
-					searchedBrandObjArray.push(BRANDS[i]);
-				}
-			}
-			var str = '';
-			for(var i = 0; i < searchedBrandObjArray.length; i++){
-				str = str + '<div class="searchedItem hover" onclick="saleOrderFunctionality.onBrandSelection(' + searchedBrandObjArray[i].brandId + ')">';
-					//str = str + '<span><img src="' + PROJECTPATH + 'uploads/brand/' + searchedBrandObjArray[i].brandImage + '" class="field5Circle" alt="' + searchedBrandObjArray[i].brandName + '"></span>'; //Open on demand
-					str = str + '<span class="padLeft4">' + searchedBrandObjArray[i].brandName + '</span>';
-				str = str + '</div>';
-			}
-			$('#searchedBrands').html(str).removeClass('hide');
-			$('#searchBrandIconSpan').html('<span class="fa fa-search hover"></span>');
-		}else{
-			$('#searchedBrands').html('').addClass('hide');
-			$('#searchBrandIconSpan').html('<span class="fa fa-search hover"></span>');
-		}
-	};
-	
-	parent.onBrandSelection = function(brandId){
-		$('#brandId').val(brandId);
-		$('#searchedBrands').html('').addClass('hide');
-		$('#searchBrand').val('');
-		saleOrderFunctionality.populateSelectedBrand(brandId);
-	};
-	
-	parent.populateSelectedBrand = function(brandId){
-		var str = '';
-		if(brandId > 0){
-			for(var i = 0; i < BRANDS.length; i++){
-				if(parseInt(BRANDS[i].brandId) === parseInt(brandId)){
-					str = '<div id="cms_45">Selected Brand : </div>';
-					str = str + '<div class="selectedBrandItem">';
-						str = str + '<div>';
-							//str = str + '<span><img src="' + PROJECTPATH + 'uploads/brand/' + BRANDS[i].brandImage + '" alt="' + BRANDS[i].brandName + '" class="productImage"></span>'; //Open on demand
-							str = str + '<span class="marleft5"><b>' + BRANDS[i].brandName + '</b></span>';
-						str = str + '</div>';
-						str = str + '<div>';
-							str = str + '<span class="pull-right fa fa-remove redText hover" onclick="saleOrderFunctionality.removeBrandSelection();"></span>';
-						str = str + '</div>';
-					str = str + '</div>';
-				}
-			}
-			$('#selectedBrandItem').html(str);
-		}
-	};
-	
-	parent.removeBrandSelection = function(){
-		$('#brandId').val(0);
-		$('#selectedBrandItem').html('');
-		$('#searchBrand').focus();
-	};
-	
-	parent.categoryPedectiveSearch = function(searchedText){
-		$('#searchCatIconSpan').html('<span class="fa fa-spinner fa-spin hover"></span>');
-		if(CATEGORIES.length > 0 && searchedText.length > 2){
-			var searchedCatObjArray = [];
-			for(var i = 0; i < CATEGORIES.length; i++){
-				if((CATEGORIES[i].category.toLowerCase()).indexOf(searchedText.toLowerCase()) !== -1){
-					searchedCatObjArray.push(CATEGORIES[i]);
-				}
-			}
-			var str = '';
-			for(var i = 0; i < searchedCatObjArray.length; i++){
-				str = str + '<div class="searchedItem hover" onclick="saleOrderFunctionality.onCatSelection(' + parseInt(searchedCatObjArray[i].categoryId) + ', this)">';
-					str = str + '<span class="padLeft4">' + searchedCatObjArray[i].category + '</span>';
-				str = str + '</div>';
-			}
-			$('#searchedCats').html(str).removeClass('hide');
-			$('#searchCatIconSpan').html('<span class="fa fa-close redText hover" onClick="saleOrderFunctionality.resetSearchCatField();"></span><span class="fa fa-search marleft5 hover"></span>');
-		}else{
-			if(searchedText.length === 0){
-				$('#searchedCats').html('').addClass('hide');
-				$('#searchCat').val('');
-				$('#searchCatIconSpan').html('<span class="fa fa-search hover"></span>');
-			}
-		}
-	};
-	
-	parent.resetSearchCatField = function(){
-		$("#searchCat").val('');
-		$('#searchedCats').html('').addClass('hide');
-	};
-	
-	parent.onCatSelection = function(catId, selfObj){
-		var str = '';
-		if(catId > 0){
-			if(!SELECTEDCATEGORYIDARR.includes(parseInt(catId))){
-				SELECTEDCATEGORYIDARR.push(parseInt(catId));
-				$("#categoryIds").val(SELECTEDCATEGORYIDARR.toString());
-			}
-			if(selfObj !== null){
-				$(selfObj).hide();
-			}
-			saleOrderFunctionality.populateSelectedCategories();
-		}
-	};
-	
-	parent.populateSelectedCategories = function(){
-		var str = '';
-		for(var i = 0; i < CATEGORIES.length; i++){
-			if(SELECTEDCATEGORYIDARR.includes(parseInt(CATEGORIES[i].categoryId))){
-				str = str + '<div class="selectedCatItem">';
-					str = str + '<span class="fa fa-tags darkGreyText"></span>';
-					str = str + '<span class="marleft5">' + CATEGORIES[i].category + '</span>';
-					str = str + '<span class="fa fa-remove redText hover marleft5" onclick="saleOrderFunctionality.removeCatSelection(' + parseInt(CATEGORIES[i].categoryId) + ');"></span>';
-				str = str + '</div>';
-			}
-		}
-		$('#selectedCatItem').html(str);
-	};
-	
-	parent.removeCatSelection = function(categoryId){
-		var index = SELECTEDCATEGORYIDARR.indexOf(categoryId);
-		if (index > -1) {
-			SELECTEDCATEGORYIDARR.splice(index, 1);
-			$("#categoryIds").val(SELECTEDCATEGORYIDARR.toString());
-		}
+
+	parent.removeCatSelection = function(categoryId) {
+		SELECTEDCATEGORYIDARR = SELECTEDCATEGORYIDARR.filter(id => id !== categoryId);
+		$("#categoryIds").val(SELECTEDCATEGORYIDARR.toString());
 		saleOrderFunctionality.populateSelectedCategories();
 	};
-	
-	parent.initSaleOrderDetail = function () {
-        appCommonFunctionality.adjustMainContainerHight('saleOrderSectionHolder');
-    };
 
-    return parent;
+	parent.initSaleOrderDetail = function() {
+		appCommonFunctionality.adjustMainContainerHight('saleOrderSectionHolder');
+	};
+	
+	return parent;
 }(window, window.$));
