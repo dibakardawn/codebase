@@ -12,7 +12,7 @@ const BARCODEAPIURL = `${PROJECTPATH}api/barcode.php?codetype=Code39&size=50&pri
 const LANGTRANSLATEAPI = 'https://api.mymemory.translated.net/get?q=';
 const COUNTRYFLAGURL = "https://flagpedia.net/data/flags/h120/";
 
-const LOADTIME = 5000;
+const LOADTIME = 1000;
 const AJAXTIMEOUT = 36000000;
 const MAXMOBILEWIDTHSUPPORT = 736;
 const COMPANYTYPECoC = 'CoC';
@@ -345,14 +345,16 @@ const appCommonFunctionality = (function (window, $) {
 			ALLSET = false;
 		});
 	};
-	
-	parent.readPrecompliedData = function(objectName){
-		localforage.getItem(objectName).then(function (value) {
-            //console.log('Retrieved data:', value);
+
+	parent.readPrecompliedData = async function(objectName) {
+		try {
+			const value = await localforage.getItem(objectName);
+			//console.log('Retrieved data:', value);
 			return value;
-        }).catch(function (err) {
-            console.error('Error retrieving data:', err);
-        });
+		} catch (err) {
+			console.error('Error retrieving data:', err);
+			return null;
+		}
 	};
 	
 	parent.checkIndexedDBDataExistance = function(key) {
@@ -520,29 +522,28 @@ const appCommonFunctionality = (function (window, $) {
 	/*---------------------------------------------------Language functionality Section------------------------------*/
 	
 	/*---------------------------------------------------Common Admin functionality Section--------------------------*/
-	parent.adminCommonActivity = function(){
+	parent.adminCommonActivity = async function() {
 		parent.toggleSidebar();
 		parent.continousLiveTimeTracker();
-		let r = await parent.checkAllSet();
-		debugger;
-		/*let allSetTimer = setTimeout(() => {
-			if(await parent.checkAllSet()){
+		let allSetTimer = setTimeout(async () => {
+			if (await parent.checkAllSet()) {
 				LANGUAGEPRECOMPILEDDATA = await parent.readPrecompliedData('LANGUAGE');
-				if(parent.getLang() === null){
+				LANGUAGEPRECOMPILEDDATA = JSON.parse(LANGUAGEPRECOMPILEDDATA);
+				if (parent.getLang() === null) {
 					var defalutLang = parent.getDefaultLang();
 					parent.setLang(defalutLang[0].sign);
 				}
-				if(LANGUAGEPRECOMPILEDDATA.length > 0 && $("#CMSDATA").length > 0){
-					if(LANGUAGEPRECOMPILEDDATA.length > 0){
+				if (LANGUAGEPRECOMPILEDDATA.length > 0 && $("#CMSDATA").length > 0) {
+					if (LANGUAGEPRECOMPILEDDATA.length > 0) {
 						parent.bindLangDDL();
 					}
-					if($("#CMSDATA").val().length > 0){
+					if ($("#CMSDATA").val().length > 0) {
 						CMSDATA = JSON.parse($("#CMSDATA").val().replace(/'/g, '"'));
 					}
 				}
 				clearTimeout(allSetTimer);
 			}
-		}, 500);*/
+		}, 500);
 	};
 	
 	parent.getCountryName = function(countryId, includeFlag) {
