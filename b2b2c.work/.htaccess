@@ -1,0 +1,30 @@
+Options +FollowSymLinks
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
+Header always set Content-Security-Policy "upgrade-insecure-requests;"
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^/?login/?$ /login.php?slug=$1 [L]
+RewriteRule ^/?products/?$ /products.php [L]
+RewriteRule ^/?offeredProducts/?$ /products.php [L]
+RewriteRule ^/?products/(.*?)/?$ /products.php?slug=$1 [L]
+RewriteRule ^/?category/?$ /products.php [L]
+RewriteRule ^/?category/(.*?)/?$ /products.php?slug=$1 [L]
+RewriteRule ^/?productDetails/(.*?)/?$ /product.php?productSlug=$1 [L]
+RewriteRule ^/?productCatalog/(.*?)/(.*?)/?$ /productCatalog.php?productCatalogId=$1 [L]
+RewriteRule ^/?magazine/(.*?)/?$ /magazine.php?magSlug=$1 [L]
+RewriteRule ^/?mediaOrder/(.*?)/?$ /mediaOrder.php?mediaOrderGuid=$1 [L]
+RewriteRule ^/?orders/?$ /orders.php [L]
+RewriteRule ^/?orderDetails/(.*?)/?$ /order.php?orderSlug=$1 [L]
+RewriteRule ^/?orderDeliveryNote/(.*?)/?$ /printableOrder.php?orderGUID=$1 [L]
+RewriteRule ^/?orderInvoice/(.*?)/?$ /printableOrder.php?orderGUID=$1 [L]
+RewriteRule ^/?exportDoc/(.*?)/?$ /printExportDoc.php?orderGUID=$1 [L]
+RewriteRule ^/?deliveryAddress/?$ /deliveryAddress.php [L]
+RewriteRule ^/?cart/?$ /cart.php [L]
+RewriteRule ^/?notice/?$ /notice.php [L]
+
+RewriteRule ^/?saleInvoice/(.*?)/?$ /printableOrder.php?type=SALEINVOICE&orderGUID=$1 [L]
+RewriteRule ^/?purchaseInvoice/(.*?)/?$ /printableOrder.php?type=PURCHASEINVOICE&orderGUID=$1 [L]

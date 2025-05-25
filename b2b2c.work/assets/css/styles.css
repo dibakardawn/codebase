@@ -1,0 +1,170 @@
+﻿/*--------------------------------------------------------Printable Order-----------------------------------------------*/
+.printabaleOrderSection{
+	display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.printabaleOrderSectionFooter{
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.printabaleOrderLogo{
+	width: 150px;
+}
+.printabaleSign{
+	width: 264px;
+}
+.printabaleOrderQR{
+	width: 150px;
+	border: 1px solid #000;
+	border-radius : 4px;
+}
+.minHTable{
+	min-height:360px;
+}
+.signatureBox{
+	width: 250px;
+    height: 120px;
+    padding: 5px;
+    border: 2px dotted #767676;
+    text-align: center;
+}
+/*--------------------------------------------------------Printable Order-----------------------------------------------*/
+
+/*--------------------------------------------------------Extra css-----------------------------------------------------*/
+.validationError{
+     border:2px solid red !important;
+}
+
+.nopaddingOnly {
+	padding: 0!important;
+}
+.noLeftPaddingOnly {
+     padding-left:0!important;
+}
+.noRightPaddingOnly {
+     padding-right:0!important;
+}
+
+.hover{
+     cursor:pointer;
+}
+.makeHazy{
+     background-color:#ccc6;
+}
+
+.redText{
+     color:red;
+	 /* Ensure backgrounds print */
+	-webkit-print-color-adjust: exact !important;
+	print-color-adjust: exact !important;
+}
+.blueText{
+     color : #4cacff;
+	 /* Ensure backgrounds print */
+	-webkit-print-color-adjust: exact !important;
+	print-color-adjust: exact !important;
+}
+.navyBlueText{
+     color : #412bf9;
+	 /* Ensure backgrounds print */
+	-webkit-print-color-adjust: exact !important;
+	print-color-adjust: exact !important;
+}
+.greenText{
+     color : #66d16e;
+	 /* Ensure backgrounds print */
+	-webkit-print-color-adjust: exact !important;
+	print-color-adjust: exact !important;
+}
+.goldenText{
+	color:#E7A245;
+	/* Ensure backgrounds print */
+	-webkit-print-color-adjust: exact !important;
+	print-color-adjust: exact !important;
+}
+.bgLightRed {
+	background-color: #facccc !important;
+}
+.lineThrough{
+	text-decoration: line-through;
+}
+
+.w100p{
+     width:100%;
+}
+
+.w350px{
+	width : 350px;
+}
+
+.marTop3 {
+	margin-top: 3px;
+}
+.marTop16 {
+	margin-top: 16px;
+}
+.marTop24{
+	margin-top:24px;
+}
+.marRig5 {
+	margin-right: 5px !important;
+}
+.marBot0{
+     margin-bottom:0px !important;
+}
+.marBot5{
+     margin-bottom:5px;
+}
+.marBot10 {
+	margin-bottom: 10px;
+}
+.marBot16{
+     margin-bottom:16px;
+}
+.marBot24{
+     margin-bottom:24px;
+}
+.marBot30{
+     margin-bottom:30px;
+}
+.marLeft5{
+     margin-left:5px;
+}
+
+.f10{
+     font-size:10px;
+}
+.f12{
+     font-size:12px;
+}
+.f14{
+    font-size:14px;
+}
+.f20{
+	font-size:20px;
+}
+.f24{
+	font-size:24px;
+}
+.f30{
+    font-size:30px;
+}
+
+.scrollX {
+	overflow-x: scroll;
+}
+/*--------------------------------------------------------Extra css-----------------------------------------------------*/
+@media print
+{    
+    .no-print, .no-print * { display: none !important; }
+	.pagebreak { clear: both!important; page-break-before: always!important; } /* page-break-after works, as well */
+	.goldenText{
+		color: #D18D2A !important;
+		/* Ensure backgrounds print */
+		-webkit-print-color-adjust: exact !important;
+		print-color-adjust: exact !important;
+	}
+	@page { border: 1px solid #ccc; }
+}

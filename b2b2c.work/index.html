@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>B2B2C-Journey From Business to Business to Brilliant</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="manifest" href="https://b2b2c.work/manifest.json">
+	<meta name="theme-color" content="#0d0d0d" />
+	<meta name="keywords" content="eCommerce platform, business management software, online retail solutions, all-in-one eCommerce, SaaS eCommerce, enterprise operations, inventory management, order processing, CRM for eCommerce, multichannel selling, Shopify alternative, ERP for small business">
+	<meta name="description" content="Journey From Business to Business to Brilliant - Our company delivers a comprehensive, all-in-one eCommerce and business operations platform designed to simplify and streamline every aspect of online retail and enterprise management. From building dynamic eCommerce websites to providing end-to-end administrative support." />
+	<link rel="shortcut icon" href="https://b2b2c.work/favicon.ico" title="Favicon" type="image/x-icon" />
+	<link rel="icon" href="https://b2b2c.work/favicon.ico" title="Favicon" type="image/x-icon">
+	<!-------------------------------------------------Social Media Meta Elements---------------------------------------------->
+	<link rel="canonical" href="https://b2b2c.work/">
+	<meta property="og:url" content="https://b2b2c.work/">
+	<meta property="og:type" content="product">
+	<meta property="og:title" content="B2B2C">
+	<meta property="og:description" content="Journey From Business to Business to Brilliant">
+	<meta property="og:image" content="https://b2b2c.work/assets/images/LogoTransparent.png">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<link rel="image_src" type="image/jpeg" href="https://b2b2c.work/assets/images/LogoTransparent.png">
+	<!-------------------------------------------------Social Media Meta Elements---------------------------------------------->
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #ccff00;
+      --bg-color: #0d0d0d;
+      --light-text: #ccc;
+      --container-width: 1200px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: white;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background-color: var(--bg-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      color: var(--primary-color);
+      font-weight: bold;
+      font-size: 28px;
+    }
+
+    nav a {
+      color: var(--primary-color);
+      margin: 0 12px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffffff;
+    }
+
+    .talk-btn {
+      background-color: var(--primary-color);
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .main-section {
+      display: flex;
+      align-items: center;
+      padding: 60px;
+      max-width: var(--container-width);
+      margin: auto;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .text-box {
+      max-width: 50%;
+    }
+
+    .text-box h1 {
+      font-size: 48px;
+      line-height: 1.2;
+    }
+
+    .text-box h1 span {
+      color: var(--primary-color);
+    }
+
+    .text-box p {
+      color: var(--light-text);
+      margin: 20px 0;
+    }
+
+    /*.image-box {
+      position: relative;
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }*/
+	
+	.image-box {
+		position: relative;
+		width: 100%;
+		max-width: 350px; /* Maximum size for larger screens */
+		height: auto; /* Height will adjust proportionally */
+		aspect-ratio: 1/1; /* Ensures perfect square (and circle) */
+		border-radius: 50%;
+		background: var(--primary-color);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		margin: 0 auto; /* Centers the box if it's not full width */
+	}
+
+    .image-box img {
+      width: 450px;
+      height: auto;
+      border-radius: 50%;
+    }
+
+    .contact-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .contact-buttons button {
+      background-color: var(--primary-color);
+      border: none;
+      padding: 15px 20px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .contact-buttons button:hover {
+      background-color: #b6e000;
+    }
+
+    @media (max-width: 900px) {
+      .main-section {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .text-box,
+      .image-box {
+        max-width: 100%;
+      }
+
+      .image-box {
+        margin-top: 30px;
+      }
+    }
+
+    .offer-bar {
+      background-color: #b6e000;
+      color: #000000;
+      padding: 10px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .offer-bar .offer-text {
+      white-space: nowrap;
+      display: inline-block;
+      animation: scroll-left 15s linear infinite;
+    }
+
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(100%);
+      }
+
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo" style="text-align: center;">B2B2C</div>
+    <!-- <nav>
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Portfolio</a>
+      <a href="#">Blog</a>
+      <a href="#">Contact</a>
+    </nav>-->
+    <button class="talk-btn" onclick="window.open('https://wa.me/8637826275', '_blank')">LET'S TALK</button>
+  </header>
+
+  <!-- Scrolling Offer Section -->
+  <div class="offer-bar text-center">
+    <div class="container">
+      <div class="offer-text">
+        🎉 Special Offer: Get 20% off on our all-in-one eCommerce and business operations platform this summer! Optimize your online store and backend operations—limited time only. Contact us now! 🎉
+      </div>
+    </div>
+  </div>
+
+  <section class="main-section">
+    <div class="text-box">
+      <h1>Empowering eCommerce with an <span>All-in-One</span><br>Intelligent Platform</h1>
+      <p>
+        Our company delivers a comprehensive, all-in-one eCommerce and business operations platform designed to simplify and streamline every aspect of online retail and enterprise management. From building dynamic eCommerce websites to providing end-to-end administrative support.
+        <span id="more-text" style="display: none;">
+          Our solution covers everything-including product creation, stock management, brand and category organization, and a smart sales search and diary system. We offer a complete sales order management solution with quick billing, invoicing, and real-time order status tracking. Purchase order handling and intelligent finance operations are seamlessly integrated, alongside robust mail tracking for operational transparency. Our platform supports user-specific content and access roles such as super admin, admin, employees, sales, and marketing teams, ensuring tailored experiences across departments. With added features like CCTV integration and more, we offer a truly unified solution that brings efficiency, control, and scalability to your business.
+        </span>
+      </p>
+      <button id="view-more-btn" style="background-color: var(--primary-color); color: #000; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">View More</button>
+    </div>
+
+    <div class="image-box">
+      <img src="https://b2b2c.work/assets/images/LogoTransparent.png" alt="B2B2C">
+    </div>
+  </section>
+
+  <div class="contact-buttons">
+    <button onclick="window.open('https://wa.me/8637826275', '_blank')">
+      <i class="fab fa-whatsapp"></i>
+    </button>
+    <button onclick="window.location.href='tel:+918637826275'">
+      <i class="fas fa-phone"></i>
+    </button>
+  </div>
+
+  <script>
+    const viewMoreBtn = document.getElementById('view-more-btn');
+    const moreText = document.getElementById('more-text');
+
+    viewMoreBtn.addEventListener('click', () => {
+      if (moreText.style.display === 'none') {
+        moreText.style.display = 'inline';
+        viewMoreBtn.textContent = 'View Less';
+      } else {
+        moreText.style.display = 'none';
+        viewMoreBtn.textContent = 'View More';
+      }
+    });
+  </script>
+</body>
+  <!-- Add this footer section at the end of the body -->
+  <footer style="background-color: var(--bg-color); color: var(--light-text); text-align: center; padding: 20px; margin-top: 40px;">
+    <p>Contact: <a href="tel:+918637826275" style="color: var(--primary-color); text-decoration: none;">+91 8637826275</a> | 
+    Email: <a href="mailto:akashdawnofficial@gmail.com" style="color: var(--primary-color); text-decoration: none;">akashdawnofficial@gmail.com</a></p>
+    <p>© Copyright 2025 | All Rights Reserved by B2B2C - Journey From Business to Business to Brilliant.</p>
+  </footer>
+
+</html>

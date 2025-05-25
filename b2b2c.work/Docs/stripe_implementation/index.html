@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Terminal Integration</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://unpkg.com/@stripe/terminal-js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <button id="connect-reader">Connect Reader</button>
+    <button id="process-payment">Process Payment</button>
+
+    <script>
+        const terminal = StripeTerminal.create({
+            onFetchConnectionToken: async () => {
+                // Fetch the connection token from your backend
+                const response = await $.post('stripe_backend.php', { action: 'create_connection_token' });
+                const data = JSON.parse(response);
+                return data.secret;
+            },
+        });
+
+        let reader;
+
+        // Step 1: Connect to the card reader
+        $('#connect-reader').click(async () => {
+            const discoverResult = await terminal.discoverReaders();
+            if (discoverResult.error || discoverResult.discoveredReaders.length === 0) {
+                alert('No readers found');
+                return;
+            }
+
+            reader = discoverResult.discoveredReaders[0]; // Use the first reader found
+            const connectResult = await terminal.connectReader(reader);
+
+            if (connectResult.error) {
+                alert(`Failed to connect: ${connectResult.error.message}`);
+            } else {
+                alert('Reader connected');
+            }
+        });
+
+        // Step 2: Process Payment
+        $('#process-payment').click(async () => {
+            const amount = 5000; // Amount in cents (e.g., $50.00)
+            const currency = 'usd';
+
+            // Create a payment intent on the backend
+            const response = await $.post('stripe_backend.php', {
+                action: 'create_payment_intent',
+                amount: amount,
+                currency: currency,
+            });
+            const { client_secret } = JSON.parse(response);
+
+            const paymentResult = await terminal.collectPaymentMethod(client_secret);
+
+            if (paymentResult.error) {
+                alert(`Payment failed: ${paymentResult.error.message}`);
+            } else {
+                const confirmResult = await terminal.processPayment(paymentResult.paymentIntent);
+
+                if (confirmResult.error) {
+                    alert(`Payment confirmation failed: ${confirmResult.error.message}`);
+                } else {
+                    alert('Payment successful!');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

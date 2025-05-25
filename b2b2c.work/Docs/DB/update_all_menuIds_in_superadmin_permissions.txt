@@ -1,0 +1,5 @@
+UPDATE `adminUser`
+SET `adminUser`.`permissions` = (
+    SELECT GROUP_CONCAT(`adminMenu`.`menuId` SEPARATOR ',') AS comma_separated_values FROM `adminMenu` WHERE 1 ORDER BY `adminMenu`.`menuId` ASC
+)
+WHERE `adminUser`.`userId` = 1

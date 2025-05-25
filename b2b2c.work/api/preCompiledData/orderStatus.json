@@ -1,0 +1,52 @@
+{
+    "orderStatus": [
+        {
+            "orderStatusId": 0,
+            "orderStatus": "PLACED",
+			"orderStatusCmsId": 385,
+			"redirectionOrderStatusIds" : "1,2,11,12"
+        },
+        {
+            "orderStatusId": 1,
+            "orderStatus": "APPROVED",
+			"orderStatusCmsId": 386,
+			"redirectionOrderStatusIds" : "2,11,12"
+        },
+        {
+            "orderStatusId": 2,
+            "orderStatus": "PAID",
+			"orderStatusCmsId": 387,
+			"redirectionOrderStatusIds" : "3,4,5"
+        },
+        {
+            "orderStatusId": 3,
+            "orderStatus": "SHIPPED",
+			"orderStatusCmsId": 388,
+			"redirectionOrderStatusIds" : "4,5,11,12"
+        },
+        {
+            "orderStatusId": 4,
+            "orderStatus": "DELIVERED",
+			"orderStatusCmsId": 389,
+			"redirectionOrderStatusIds" : "5,11,12"
+        },
+        {
+            "orderStatusId": 5,
+            "orderStatus": "COMPLETED",
+			"orderStatusCmsId": 390,
+			"redirectionOrderStatusIds" : ""
+        },
+        {
+            "orderStatusId": 11,
+            "orderStatus": "CANCELLED1",
+			"orderStatusCmsId": 391,
+			"redirectionOrderStatusIds" : ""
+        },
+        {
+            "orderStatusId": 12,
+            "orderStatus": "CANCELLED2",
+			"orderStatusCmsId": 392,
+			"redirectionOrderStatusIds" : ""
+        }
+    ]
+}

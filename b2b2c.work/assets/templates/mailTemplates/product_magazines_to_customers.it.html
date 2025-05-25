@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Benvenuto in {{SITENAME}}</title>
+</head>
+<body style="margin:0; padding:0; font-family:Arial, sans-serif; background-color:#f4f4f4;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f4f4">
+        <tr>
+            <td align="center" style="padding:40px 10px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color:#DC143C; padding:24px; text-align:center; color:#fff; font-size:24px; font-weight:bold;">
+                            Benvenuto in {{SITENAME}}
+                        </td>
+                    </tr>
+                    
+                    <!-- Logo -->
+                    <tr>
+                        <td align="center" style="padding:20px 0 10px 0;">
+                            <img src="{{SITEURL}}assets/images/logo.jpg" alt="{{SITENAME}} Logo" style="max-width:150px; height:auto;">
+                        </td>
+                    </tr>
+
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding:30px 40px; color:#333;">
+                            <p style="font-size:16px; margin-bottom:20px;">Ciao Cliente,</p>
+
+                            <p style="font-size:16px; margin-bottom:20px;">
+                                Clicca sul link qui sotto per vedere i nostri prodotti.
+                            </p>
+
+                            <div style="text-align: center; margin: 30px 0;">
+                                <a href="{{SITEURL}}magazine/{{MAGCODE}}" target="_blank"
+                                   style="display:inline-block; padding:12px 24px; background-color:#DC143C; color:#ffffff; text-decoration:none; font-size:16px; border-radius:6px;">
+                                    Vedi Catalogo Prodotti
+                                </a>
+                            </div>
+
+                            <p style="font-size:16px; margin-bottom:20px;">
+                                Questo è un catalogo digitale di prodotti dove puoi sfogliare le pagine e vedere i nostri prodotti.
+                            </p>
+
+                            <p style="font-size:16px;">Grazie e cordiali saluti,</p>
+                            <p style="font-size:16px;"><strong>Il team di {{SITENAME}}</strong></p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="font-size:12px; color:#999999; padding:20px; background-color:#fafafa;">
+                            &copy; {{year}} {{company_name}}. Tutti i diritti riservati.
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

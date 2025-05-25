@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-------------------------------------------------Bootstrap & fonts.googleapis-------------------------------------------->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-------------------------------------------------Bootstrap & fonts.googleapis-------------------------------------------->
+
+	<!-------------------------------------------------jQuery.min, bootstrap & HTML5------------------------------------------->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<!-------------------------------------------------jQuery.min, bootstrap & HTML5------------------------------------------->
+    <title>QR Code Scanner / Reader</title>
+	<style>
+	.marTop16 {
+		margin-top: 16px;
+	}
+	</style>
+</head>
+<body>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marTop16 text-center">
+        <div id="my-qr-reader">
+        </div>
+		<button onclick="window.close()">Save & return to Origin</button>
+		<div>
+			<span>Count of scanner items</span>
+			<span id="scannedItems"></span>
+		</div>
+    </div>
+	<!-------------------------------------------------Application Specific JS------------------------------------------------->
+	<script type='text/javascript' src='https://b2b2c.work/assets/js/plugins/html5-qrcode.min.js'></script>
+	<script type='text/javascript' src='https://b2b2c.work/assets/js/adminFunctionality/qrCodeScannerCamera.js'></script>
+	<!-------------------------------------------------Application Specific JS------------------------------------------------->
+</body>
+</html>

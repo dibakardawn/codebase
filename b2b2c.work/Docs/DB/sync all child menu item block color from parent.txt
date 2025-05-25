@@ -1,0 +1,21 @@
+UPDATE `adminMenu` AS adminMenu2 
+JOIN `adminMenu` AS adminMenu1 
+ON adminMenu2.menuParentId = adminMenu1.menuId
+SET adminMenu2.blockColor = adminMenu1.blockColor,
+adminMenu2.bootstrapIcon = adminMenu1.bootstrapIcon
+WHERE adminMenu2.menuParentId > 0
+AND adminMenu1.menuParentId = 0
+
+
+UPDATE `adminMenu` SET `blockColor` = 'w3-red', `bootstrapIcon` = 'fa-globe' WHERE `adminMenu`.`menuId` = 81;
+UPDATE `adminMenu` SET `blockColor` = 'w3-orange', `bootstrapIcon` = 'fa-gbp' WHERE `adminMenu`.`menuId` = 85;
+UPDATE `adminMenu` SET `blockColor` = 'w3-blue', `bootstrapIcon` = 'fa-language' WHERE `adminMenu`.`menuId` = 83;
+UPDATE `adminMenu` SET `blockColor` = 'w3-teal', `bootstrapIcon` = 'fa-font' WHERE `adminMenu`.`menuId` = 18;
+UPDATE `adminMenu` SET `blockColor` = 'w3-red', `bootstrapIcon` = 'fa-calendar' WHERE `adminMenu`.`menuId` = 40;
+UPDATE `adminMenu` SET `blockColor` = 'w3-orange', `bootstrapIcon` = 'fa-building-o' WHERE `adminMenu`.`menuId` = 80;
+UPDATE `adminMenu` SET `blockColor` = 'w3-blue', `bootstrapIcon` = 'fa-braille' WHERE `adminMenu`.`menuId` = 82;
+UPDATE `adminMenu` SET `blockColor` = 'w3-teal', `bootstrapIcon` = 'fa-archive' WHERE `adminMenu`.`menuId` = 84;
+UPDATE `adminMenu` SET `blockColor` = 'w3-red', `bootstrapIcon` = 'fa-list' WHERE `adminMenu`.`menuId` = 89;
+UPDATE `adminMenu` SET `blockColor` = 'w3-orange', `bootstrapIcon` = 'fa-crop' WHERE `adminMenu`.`menuId` = 34;
+UPDATE `adminMenu` SET `blockColor` = 'w3-blue', `bootstrapIcon` = 'fa-sliders' WHERE `adminMenu`.`menuId` = 35;
+UPDATE `adminMenu` SET `blockColor` = 'w3-teal', `bootstrapIcon` = 'fa-database' WHERE `adminMenu`.`menuId` = 86;

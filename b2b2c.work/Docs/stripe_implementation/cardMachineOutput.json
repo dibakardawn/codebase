@@ -1,0 +1,30 @@
+{
+  "paymentIntent": {
+    "id": "pi_1XYZ...",
+    "object": "payment_intent",
+    "amount": 5000,
+    "currency": "usd",
+    "status": "succeeded",
+    "charges": {
+      "data": [
+        {
+          "id": "ch_1ABC...",
+          "object": "charge",
+          "amount": 5000,
+          "currency": "usd",
+          "status": "succeeded",
+          "payment_method_details": {
+            "card_present": {
+              "brand": "visa",
+              "last4": "1234",
+              "country": "US",
+              "emv_auth_data": "A1B2C3..."
+            }
+          },
+          "created": 1674839172
+        }
+      ]
+    },
+    "created": 1674839170
+  }
+}
