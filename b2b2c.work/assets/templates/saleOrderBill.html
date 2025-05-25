@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sale Order Bill Print Preview</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .receipt {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #FFF;
+        }
+        .receipt-header, .receipt-footer {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .receipt-details, .receipt-items th, .receipt-items td {
+            font-size: 14px;
+        }
+        .total-section {
+            font-weight: bold;
+        }
+        .roundedBorder {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .lineThrough {
+            text-decoration: line-through;
+        }
+		.marRig5 {
+			margin-right: 5px !important;
+		}
+		.marleft5 {
+			margin-Left: 5px !important;
+		}
+    </style>
+</head>
+<body>
+    {{content}}
+</body>
+</html>

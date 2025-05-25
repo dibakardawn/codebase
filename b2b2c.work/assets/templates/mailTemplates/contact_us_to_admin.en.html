@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>New Contact Form Submission - {{SITENAME}}</title>
+</head>
+<body style="margin:0; padding:0; font-family:Arial, sans-serif; background-color:#f4f4f4;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f4f4">
+        <tr>
+            <td align="center" style="padding:40px 10px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color:#F5FFFA; padding:24px; text-align:center; border-bottom:2px solid #E0E0E0;">
+                            <div style="font-size:26px; font-weight:bold; color:#333;">New Contact Submission</div>
+                            <div style="margin-top:5px; font-size:14px; color:#666;">Requires your attention</div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Logo -->
+                    <tr>
+                        <td align="center" style="padding:20px 0 10px 0;">
+                            <img src="{{SITEURL}}assets/images/logo.jpg" alt="{{SITENAME}} Logo" style="max-width:150px; height:auto;">
+                        </td>
+                    </tr>
+
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding:30px 40px; color:#333;">
+                            <h2 style="margin-top:0; font-size:20px; color:#333;">Hello Admin,</h2>
+
+                            <p style="font-size:16px; margin-bottom:25px;">
+                                A new contact form submission has been received on <strong>{{SITENAME}}</strong>:
+                            </p>
+
+                            <div style="background-color:#F5FFFA; border-radius:8px; padding:20px; margin-bottom:25px; border:1px solid #E0E0E0;">
+                                <table width="100%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td style="padding:8px 0; width:30%; font-weight:bold;">From:</td>
+                                        <td style="padding:8px 0;">{{VISITOR_NAME}} &lt;{{VISITOR_EMAIL}}&gt;</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:8px 0; font-weight:bold;">Subject:</td>
+                                        <td style="padding:8px 0;">{{MESSAGE_SUBJECT}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:8px 0; font-weight:bold; vertical-align:top;">Message:</td>
+                                        <td style="padding:8px 0;">{{VISITOR_MESSAGE}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:8px 0; font-weight:bold;">Received:</td>
+                                        <td style="padding:8px 0;">{{CURRENT_DATE}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div style="text-align: center; margin: 30px 0;">
+                                <a href="{{ADMIN_PANEL_URL}}" target="_blank"
+                                   style="display:inline-block; padding:12px 24px; background-color:#4CAF50; color:#ffffff; text-decoration:none; font-size:16px; border-radius:6px;">
+                                    View in Admin Panel
+                                </a>
+                            </div>
+
+                            <p style="font-size:14px; color:#666; text-align:center;">
+                                This is an automated notification. Please respond to the sender within 24 hours.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="font-size:12px; color:#999999; padding:20px; background-color:#fafafa; border-top:1px solid #E0E0E0;">
+                            &copy; {{year}} {{SITENAME}}. All rights reserved.
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

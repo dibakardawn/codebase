@@ -1,0 +1,54 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Rent",
+      "description": "Monthly rent for the shop space"
+    },
+    {
+      "id": 2,
+      "name": "Utilities",
+      "description": "Electricity, water, gas, and other utility expenses"
+    },
+    {
+      "id": 3,
+      "name": "Salaries",
+      "description": "Wages and salaries paid to employees"
+    },
+    {
+      "id": 4,
+      "name": "Inventory",
+      "description": "Cost of goods purchased for resale"
+    },
+    {
+      "id": 5,
+      "name": "Marketing",
+      "description": "Advertising and promotional expenses"
+    },
+    {
+      "id": 6,
+      "name": "Supplies",
+      "description": "Office supplies, cleaning supplies, and other consumables"
+    },
+    {
+      "id": 7,
+      "name": "Maintenance",
+      "description": "Repairs and maintenance of equipment and facilities"
+    },
+    {
+      "id": 8,
+      "name": "Insurance",
+      "description": "Insurance premiums for property, liability, and other coverage"
+    },
+    {
+      "id": 9,
+      "name": "Transportation",
+      "description": "Expenses for transportation of goods and employees"
+    },
+    {
+      "id": 10,
+      "name": "Miscellaneous",
+      "description": "Other expenses that do not fit into the above categories"
+    }
+  ]
+}

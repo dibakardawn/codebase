@@ -1,0 +1,44 @@
+<?php
+function zipFolder($folderPath, $zipFilePath) {
+    // Create a new ZipArchive instance
+    $zip = new ZipArchive();
+    
+    // Open the zip file for writing
+    if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+        die("Cannot create zip file at $zipFilePath");
+    }
+    
+    // Add files and folders recursively
+    $folderPath = realpath($folderPath);
+    if (is_dir($folderPath)) {
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($folderPath),
+            RecursiveIteratorIterator::LEAVES_ONLY
+        );
+        
+        foreach ($files as $name => $file) {
+            // Skip directories (they are added automatically)
+            if (!$file->isDir()) {
+                // Get the real and relative path for the current file
+                $filePath = $file->getRealPath();
+                $relativePath = substr($filePath, strlen($folderPath) + 1);
+                
+                // Add the file to the zip archive
+                $zip->addFile($filePath, $relativePath);
+            }
+        }
+    } else {
+        die("$folderPath is not a valid directory.");
+    }
+    
+    // Close the zip archive
+    $zip->close();
+    echo "Zip file created successfully at $zipFilePath";
+}
+
+// Example Usage
+$folderToZip = '../api/preCompiledData'; // Replace with your folder path
+$zipFile = '../api/preCompiledData.zip'; // Replace with desired zip file path
+
+zipFolder($folderToZip, $zipFile);
+?>

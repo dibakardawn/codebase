@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Change Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <label for="textInput">Type something:</label>
+    <input type="text" id="textInput" />
+
+    <p>Input value: <span id="output"></span></p>
+
+    <script>
+        $(document).ready(function() {
+            $('#textInput').on('input', function() {
+                const inputValue = $(this).val();
+                $('#output').text(inputValue);
+            });
+        });
+    </script>
+</body>
+</html>

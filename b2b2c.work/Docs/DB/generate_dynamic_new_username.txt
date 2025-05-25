@@ -1,0 +1,33 @@
+SET @desired_username = 'testuser';
+
+-- Check if the username already exists and find the minimum unique suffix
+SELECT 
+    CASE 
+        WHEN COUNT(*) = 0 THEN @desired_username -- If no match, use the desired username
+        ELSE CONCAT(@desired_username, '_', 
+                    COALESCE(
+                        (SELECT MIN(t.num) + 1 
+                         FROM (
+                             SELECT 
+                                CAST(SUBSTRING_INDEX(username, '_', -1) AS UNSIGNED) AS num
+                             FROM user
+                             WHERE username REGEXP CONCAT('^', @desired_username, '_[0-9]+')
+                         ) AS t
+                         WHERE t.num + 1 NOT IN (
+                             SELECT 
+                                CAST(SUBSTRING_INDEX(username, '_', -1) AS UNSIGNED) AS num
+                             FROM user
+                             WHERE username REGEXP CONCAT('^', @desired_username, '_[0-9]+')
+                         )
+                    ), 1) -- Default to "_1" if no suffix exists
+        )
+    END AS unique_username
+FROM 
+    user 
+WHERE 
+    username = @desired_username 
+    OR username REGEXP CONCAT('^', @desired_username, '_[0-9]+');
+	
+	
+//2 simple option
+SELECT CONCAT('user', IFNULL(MAX(CAST(SUBSTRING(username, 5) AS UNSIGNED)) + 1, 1)) AS suggested_username FROM `adminUser` WHERE username REGEXP '^user[0-9]+$';

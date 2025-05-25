@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Il Tuo Codice OTP - {{SITENAME}}</title>
+</head>
+<body style="margin:0; padding:0; font-family:Arial, sans-serif; background-color:#f4f4f4;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f4f4">
+        <tr>
+            <td align="center" style="padding:40px 10px;"> <!-- Spazio in alto -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.1);"> <!-- Ombreggiatura -->
+                    <!-- Intestazione -->
+                    <tr>
+                        <td style="background-color:#2ECC71; padding:24px; text-align:center; color:#fff; font-size:24px; font-weight:bold;">
+                            Password Monouso (OTP)
+                        </td>
+                    </tr>
+                    
+                    <!-- Logo -->
+                    <tr>
+                        <td align="center" style="padding:20px 0 10px 0;">
+                            <img src="{{SITEURL}}assets/images/logo.jpg" alt="Logo {{SITENAME}}" style="max-width:150px; height:auto;">
+                        </td>
+                    </tr>
+
+                    <!-- Corpo -->
+                    <tr>
+                        <td style="padding:30px 40px; color:#333;">
+                            <h2 style="margin-top:0; font-size:20px; color:#333;">Gentile {{SUPPLIERNAME}},</h2>
+
+                            <p style="font-size:16px; margin-bottom:25px;">
+                                La tua Password Monouso (OTP) per la verifica su <strong>{{SITENAME}}</strong> è:
+                            </p>
+
+                            <div style="padding:20px; background-color:#f7f7f7; border-left:4px solid #2ECC71; margin-bottom:25px; text-align:center;">
+                                <p style="margin:0; font-size:32px; font-weight:bold; color:#2ECC71;">
+                                    {{OTP}}
+                                </p>
+                            </div>
+
+                            <p style="font-size:16px; text-align:center; margin-bottom:25px;">
+                                Questo codice OTP è valido per le prossime 24 ore fino al prossimo accesso.
+                            </p>
+
+                            <p style="font-size:16px;">
+                                Se non hai richiesto questo codice OTP, ti preghiamo di ignorare questa email o contattarci all'indirizzo 
+                                <a href="mailto:{{SUPPORTEMAIL}}" style="color:#2ECC71;">{{SUPPORTEMAIL}}</a>.
+                            </p>
+
+                            <p style="font-size:16px;">Grazie,</p>
+                            <p style="font-size:16px;"><strong>Il Team di {{SITENAME}}</strong></p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="font-size:12px; color:#999999; padding:20px; background-color:#fafafa;"> <!-- Sfondo grigio chiaro -->
+                            &copy; {{year}} {{SITENAME}}. Tutti i diritti riservati.
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

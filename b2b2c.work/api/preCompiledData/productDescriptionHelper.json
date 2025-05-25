@@ -1,0 +1,193 @@
+[
+   {
+      "fieldName":"field1",
+      "type":"text",
+      "size":12,
+      "fieldSpan1":"Field 1",
+      "fieldSpan2":"",
+      "placeHolder":"Enter Data Field 1",
+      "value":""
+   },
+   {
+      "fieldName":"field2",
+      "type":"text",
+      "size":12,
+      "fieldSpan1":"Field 2",
+      "fieldSpan2":"",
+      "placeHolder":"Enter Data Field 2",
+      "value":""
+   },
+   {
+      "groupInputs":[
+         {
+            "fieldName":"field3",
+            "type":"number",
+            "size":4,
+            "fieldSpan1":"Field 3",
+            "fieldSpan2":"X",
+            "placeHolder":"Enter Data Field 3",
+            "value":""
+         },
+         {
+            "fieldName":"field4",
+            "type":"number",
+            "size":4,
+            "fieldSpan1":"",
+            "fieldSpan2":"X",
+            "placeHolder":"Enter Data Field 4",
+            "value":""
+         },
+         {
+            "fieldName":"field5",
+            "type":"number",
+            "size":4,
+            "fieldSpan1":"",
+            "fieldSpan2":"",
+            "placeHolder":"Enter Data Field 5",
+            "value":""
+         }
+      ]
+   },
+   {
+      "groupInputs":[
+         {
+            "fieldName":"field6",
+            "type":"toggle",
+            "size":6,
+            "fieldSpan1":"Field 6",
+            "fieldSpan2":"",
+            "placeHolder":"Enter Data Field 6",
+            "value":""
+         },
+         {
+            "fieldName":"field7",
+            "type":"text",
+            "size":6,
+            "fieldSpan1":"Field 7",
+            "fieldSpan2":"",
+            "placeHolder":"Enter Data Field 7",
+            "value":""
+         }
+      ]
+   },
+   {
+      "fieldName":"field8",
+      "type":"text",
+      "size":12,
+      "fieldSpan1":"Field 8",
+      "fieldSpan2":"",
+      "placeHolder":"Enter Data Field 8",
+      "value":""
+   },
+   {
+      "fieldName":"field9",
+      "type":"text",
+      "size":12,
+      "fieldSpan1":"Field 9",
+      "fieldSpan2":"",
+      "placeHolder":"Enter Data Field 9",
+      "value":""
+   },
+   {
+      "groupInputs":[
+         {
+            "fieldName":"field10",
+            "type":"number",
+            "size":6,
+            "fieldSpan1":"Field 10",
+            "fieldSpan2":"X",
+            "placeHolder":"Enter Data Field 10",
+            "value":""
+         },
+         {
+            "fieldName":"field11",
+            "type":"number",
+            "size":6,
+            "fieldSpan1":"Field 11",
+            "fieldSpan2":"cm",
+            "placeHolder":"Enter Data Field 11",
+            "value":""
+         }
+      ]
+   },
+   {
+      "groupInputs":[
+         {
+            "fieldName":"field12",
+            "type":"toggle",
+            "size":6,
+            "fieldSpan1":"Field 12",
+            "fieldSpan2":"",
+            "placeHolder":"Enter Data Field 12",
+            "value":""
+         },
+         {
+            "fieldName":"field13",
+            "type":"number",
+            "size":6,
+            "fieldSpan1":"Field 13",
+            "fieldSpan2":"",
+            "placeHolder":"Enter Data Field 13",
+            "value":""
+         }
+      ]
+   },
+   {
+      "groupInputs":[
+         {
+            "fieldName":"field14",
+            "type":"toggle",
+            "size":6,
+            "fieldSpan1":"Field 14",
+            "fieldSpan2":"",
+            "placeHolder":"Enter Data Field 14",
+            "value":""
+         },
+         {
+            "fieldName":"field15",
+            "type":"toggle",
+            "size":6,
+            "fieldSpan1":"Field 15",
+            "fieldSpan2":"",
+            "placeHolder":"Enter Data Field 15",
+            "value":""
+         }
+      ]
+   },
+   {
+      "fieldName":"field16",
+      "type":"text",
+      "size":12,
+      "fieldSpan1":"Field 16",
+      "fieldSpan2":"",
+      "placeHolder":"Enter Data Field 16",
+      "value":""
+   },
+   {
+      "fieldName":"field17",
+      "type":"text",
+      "size":12,
+      "fieldSpan1":"Field 17",
+      "fieldSpan2":"",
+      "placeHolder":"Enter Data Field 17",
+      "value":""
+   },
+   {
+      "fieldName":"field18",
+      "type":"text",
+      "size":12,
+      "fieldSpan1":"Field 18",
+      "fieldSpan2":"",
+      "placeHolder":"Enter Data Field 18",
+      "value":""
+   },
+   {
+      "fieldName":"field19",
+      "type":"text",
+      "size":12,
+      "fieldSpan1":"Field 19",
+      "fieldSpan2":"",
+      "placeHolder":"Enter Data Field 19",
+      "value":""
+   }
+]

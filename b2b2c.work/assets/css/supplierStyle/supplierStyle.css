@@ -1,0 +1,263 @@
+.logo{
+	width: 200px;
+    margin-bottom: 20px;
+}
+.navbar {
+	margin-bottom: 0;
+	border-radius: 0;
+}
+.otp-input {
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	font-size: 20px;
+	margin: 0 5px;
+}
+.otp-form {
+	text-align: center;
+	margin-top: 20%;
+}
+/* Hide the default up and down buttons for number input */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+input[type="number"] {
+	-moz-appearance: textfield; /* Hide the spin buttons in Firefox */
+}
+/* Hide the default up and down buttons for number input */
+.tabBtn {
+	border-top: 2px solid #6682d2;
+	border-left: 2px solid #6682d2;
+	border-right: 2px solid #6682d2;
+	padding: 5px;
+	margin-right: 5px;
+	border-radius: 6px 6px 0px 0px;
+}
+.tabBtnActive {
+	border-top: 2px solid #6682d2;
+	border-left: 2px solid #6682d2;
+	border-right: 2px solid #6682d2;
+	padding: 5px;
+	margin-right: 5px;
+	border-radius: 6px 6px 0px 0px;
+	background-color: #2196F3;
+	color: #FFF;
+}
+.tabHeader {
+	border-bottom: 1px solid #6682d2;
+}
+.ddlStyle {
+	float: left;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 7px;
+	margin-right: 5px;
+}
+.spaceBetweenSection {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+}
+.clauseItem{
+	margin: 0px 0px 4px 0px;
+	padding: 2px 0px 0px 4px;
+	background-color: #dedede80;
+	border: 1px solid #b1acac;
+    border-radius: 4px;
+}
+.sectionBlock2 {
+	float: left;
+	border: 1px solid #CCC;
+	padding: 4px 4px 0px 4px;
+	border-radius: 6px;
+}
+.customerSignatureBlock {
+	width: auto;
+	height: auto;
+	border: 1px solid #ccc;
+	padding: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 2px 2px 4px 0px rgba(133, 133, 133, 1);
+	-moz-box-shadow: 2px 2px 4px 0px rgba(133, 133, 133, 1);
+	box-shadow: 2px 2px 4px 0px rgba(133, 133, 133, 1);
+}
+.customerSignatureBlock img {
+	width: 364px;
+	height: 164px;
+}
+.customerSignatureBlock-mob {
+		width: 100%;
+		height: auto;
+		border: 1px solid #ccc;
+		padding: 4px;
+		border-radius: 4px;
+		-webkit-box-shadow: 2px 2px 4px 0px rgba(133, 133, 133, 1);
+		-moz-box-shadow: 2px 2px 4px 0px rgba(133, 133, 133, 1);
+		box-shadow: 2px 2px 4px 0px rgba(133, 133, 133, 1);
+	}
+.customerSignatureBlock-mob img {
+	width: 100%;
+	height: 164px;
+}
+.cartonDiv3 {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 4px;
+}
+.cartonSticker{
+	width: 350px;
+    border: 1px solid #CCC;
+    margin: 5px 2px;
+	padding: 4px;
+    border-radius: 4px;
+}
+.cartonStickerQR{
+	width:80px;
+	height:80px;
+}
+.bgLightRed {
+	background-color: #facccc !important;
+}
+footer {
+	background-color: #f2f2f2;
+	padding: 16px;
+}
+/*--------------------------------Extra css---------------------------------------*/
+.nopaddingOnly {
+     padding:0!important;
+}
+.noLeftPaddingOnly {
+     padding-left:0!important;
+}
+.noRightPaddingOnly {
+     padding-right:0!important;
+}
+.validationError{
+     border:2px solid red !important;
+}
+.makeHazy{
+     background-color:#ccc6;
+}
+.pomptMsg{
+	padding: 20px 14px 14px 14px;
+    font-size: 14px;
+    color: #ffffff;
+    background: #131212d1;
+    border-radius: 6px;
+}
+.grayBorder{
+	border:1px solid #ccc;
+}
+.hover{
+     cursor:pointer;
+}
+.whiteText {
+	color: #FFF;
+}
+.redText {
+	color: red;
+}
+.blueText {
+	color: blue;
+}
+.lightBlueText{
+	color: #5d8ce1;
+}
+.greenText {
+	color: green;
+}
+.marTop5 {
+	margin-top: 5px;
+}
+.marTop10{
+	margin-top:10px;
+}
+.marTop16{
+	margin-top:16px;
+}
+.marRight5{
+	margin-right : 5px;
+}
+.marBot5{
+	margin-bottom:5px;
+}
+.marBot10{
+	margin-bottom:10px;
+}
+.marBot16{
+	margin-bottom:16px;
+}
+.marBot20 {
+	margin-bottom: 20px;
+}
+.marLeft5{
+	margin-left : 5px;
+}
+.borderBot{
+	border-bottom: 1px solid #ccc;
+}
+.w24 {
+	width: 24px !important;
+}
+.w50 {
+	width: 50px !important;
+}
+.h18 {
+	height: 18px;
+}
+.h34 {
+	height: 34px !important;
+}
+.w98p{
+	width:98%;
+}
+.w100p{
+	width:100%;
+}
+.minW1180 {
+	min-width: 1180px;
+}
+.valignMid{
+	vertical-align: middle!important;
+}
+.f12{
+	font-size:12px;
+}
+.f14{
+	font-size:14px;
+}
+.f20{
+	font-size:20px;
+}
+.f24{
+	font-size:24px;
+}
+.f36{
+	font-size:36px;
+}
+.scrollX {
+	overflow-x: scroll;
+}
+/*--------------------------------Extra css---------------------------------------*/
+
+/*------------------------------------------------Media Styles---------------------------------------------------------*/
+@media print {
+
+	.no-print,
+	.no-print * {
+		display: none !important;
+	}
+
+	.pagebreak {
+		clear: both;
+		page-break-before: always;
+	}
+
+	/* page-break-after works, as well */
+	@page {
+		border: 1px solid #ccc;
+	}
+}
+/*------------------------------------------------Media Styles---------------------------------------------------------*/

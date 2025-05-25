@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Nuova registrazione fornitore - {{SITENAME}}</title>
+</head>
+<body style="margin:0; padding:0; font-family:Arial, sans-serif; background-color:#f4f4f4;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f4f4">
+        <tr>
+            <td align="center" style="padding:40px 10px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color:#FF6F61; padding:24px; text-align:center; color:#fff; font-size:24px; font-weight:bold;">
+                            Nuova registrazione fornitore
+                        </td>
+                    </tr>
+                    
+                    <!-- Logo -->
+                    <tr>
+                        <td align="center" style="padding:20px 0 10px 0;">
+                            <img src="{{SITEURL}}assets/images/logo.jpg" alt="{{SITENAME}} Logo" style="max-width:150px; height:auto;">
+                        </td>
+                    </tr>
+
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding:30px 40px; color:#333;">
+                            <h2 style="margin-top:0; font-size:20px; color:#333;">Gentile Amministratore,</h2>
+
+                            <p style="font-size:16px; margin-bottom:25px;">
+                                Un nuovo fornitore si è registrato su <strong>{{SITENAME}}</strong>. Ecco i dettagli:
+                            </p>
+
+                            <table cellpadding="6" cellspacing="0" border="0" style="width:100%; font-size:15px; margin-bottom:25px;">
+                                <tr>
+                                    <td style="font-weight:bold; width:180px;">Nome fornitore:</td>
+                                    <td>{{supplierName}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Persona di contatto:</td>
+                                    <td>{{supplierContactPerson}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Indirizzo:</td>
+                                    <td>{{supplierAddress}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Città:</td>
+                                    <td>{{supplierTown}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">CAP:</td>
+                                    <td>{{supplierPostCode}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Paese:</td>
+                                    <td>{{supplierCountry}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Telefono:</td>
+                                    <td>{{supplierContactNo}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Email:</td>
+                                    <td><a href="mailto:{{supplierEmail}}" style="color:#FF6F61;">{{supplierEmail}}</a></td>
+                                </tr>
+                            </table>
+
+                            <p style="font-size:16px; margin-bottom:25px;">
+                                Accedi al pannello di amministrazione per verificare e approvare questo fornitore.
+                            </p>
+
+                            <div style="text-align: center; margin: 30px 0;">
+                                <a href="{{SITEURL}}admin/login.php" target="_blank"
+                                   style="display:inline-block; padding:12px 24px; background-color:#FF6F61; color:#ffffff; text-decoration:none; font-size:16px; border-radius:6px;">
+                                    Vai al pannello di amministrazione
+                                </a>
+                            </div>
+
+                            <p style="font-size:16px;">Cordiali saluti,</p>
+                            <p style="font-size:16px;"><strong>Il team di {{SITENAME}}</strong></p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="font-size:12px; color:#999999; padding:20px; background-color:#fafafa;">
+                            &copy; {{year}} {{SITENAME}}. Tutti i diritti riservati.
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
